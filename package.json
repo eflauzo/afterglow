@@ -1,0 +1,25 @@
+{
+  "name": "cathode",
+  "version": "0.0.1",
+  "description": "JavaScript UI Library",
+  "main": "cathode.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eflauzo/cathode.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "UI",
+    "WebGL",
+    "TypeScript"
+  ],
+  "author": "Denys Metelskyy",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/eflauzo/cathode/issues"
+  },
+  "homepage": "https://github.com/eflauzo/cathode#readme"
+}
