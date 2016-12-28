@@ -11,6 +11,7 @@
   <canvas id="screen01" style="border: none;" width="425" height="330"></canvas>
 
   <script type="module">
+      // demonstration of visualization and selection using cathode structure 
 
       import {CxDisplay,
         CxNode,
@@ -90,7 +91,6 @@
         ]
       )
 
-
       var root = new CxNode([]);
 
       root.items.push(interactive_node)
@@ -103,21 +103,14 @@
       name_node.items.push(visualizer_node)
 
       let canva = document.getElementById("screen01");
-      canva.onmousemove = function(e) {
 
+      canva.onmousemove = function(e) {
         let rect = canva.getBoundingClientRect();
         let x = (e.clientX - rect.left) / (rect.right - rect.left) * canva.width
         let y = (e.clientY - rect.top) / (rect.bottom - rect.top) * canva.height
-
-
-        //let name_color = interactive_payload.name_color_at(e.clientX, e.clientY);
         let name_color = interactive_payload.name_color_at(x, y);
-
-        //console.log(e);
-        //console.log([e.clientX, e.clientY, name_color[0], name_color[1], name_color[2], name_color[3]]);
-        console.log(CxNameManager.fromColor(name_color));
+        console.log('Selected:', CxNameManager.fromColor(name_color));
       }
-
 
     display.start(root)
 
