@@ -4,7 +4,8 @@
   "description": "JavaScript UI Library",
   "main": "cathode.js",
   "scripts": {
-    "test": "test"
+    "test": "tsc -p tests && mocha tests/built/tests/*.js",
+    "build": "tsc -p . && rollup -c"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,22 @@
   "bugs": {
     "url": "https://github.com/eflauzo/cathode/issues"
   },
-  "homepage": "https://github.com/eflauzo/cathode#readme"
+  "homepage": "https://github.com/eflauzo/cathode#readme",
+  "devDependencies": {
+    "@types/gl-matrix": "^2.2.34",
+    "browser-es-module-loader": "^0.2.0",
+    "gl-matrix": "^2.3.2",
+    "mocha": "^3.2.0",
+    "mocha-typescript": "^1.0.14",
+    "requirejs": "^2.3.2",
+    "rollup": "^0.36.4",
+    "rollup-plugin-commonjs": "^5.0.5",
+    "rollup-plugin-multi-entry": "^2.0.1",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-typescript": "^0.8.1",
+    "typescript": "^2.0.10"
+  },
+  "dependencies": {
+    "babel-standalone": "^6.19.0"
+  }
 }

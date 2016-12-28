@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "es6",
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "noImplicitAny": true,
+        "outDir": "./dist/cathode/",
+        "sourceMap": true,
+        "target": "ES6"
+    },
+    "include": [
+      "src/**/*"
+    ]
+}
