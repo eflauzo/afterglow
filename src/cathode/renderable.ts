@@ -10,10 +10,15 @@ export abstract class CxObject {
     _color_buffer: WebGLBuffer
     _color_count: number
 
+    _tex_buffer: WebGLBuffer
+    _tex_count: number
+
+
     constructor(is_static: boolean) {
         this.is_static = is_static;
         this._vertex_buffer = null;
         this._color_buffer = null;
+        this._tex_buffer = null;
     }
 
     getVertexBuffer(context: CxRenderingContext): [WebGLBuffer, number] {
@@ -42,7 +47,21 @@ export abstract class CxObject {
         return [this._color_buffer, this._color_count];
     }
 
+    getTexBuffer(context: CxRenderingContext): [WebGLBuffer, number] {
+        if ((this._tex_buffer == null) || (!this.is_static)) {
+            this._tex_buffer = context.gl.createBuffer();
+            context.gl.bindBuffer(context.gl.ARRAY_BUFFER, this._tex_buffer);
+            var tex_array: Float32Array = this.texture(context);
+            context.gl.bufferData(context.gl.ARRAY_BUFFER,
+                tex_array,
+                context.gl.STATIC_DRAW);
+            this._tex_count = tex_array.length / 2;
+        }
+        return [this._tex_buffer, this._tex_count];
+    }
+
 
     abstract vertices(context: CxRenderingContext): Float32Array;
     abstract colors(context: CxRenderingContext): Float32Array;
+    abstract texture(context: CxRenderingContext): Float32Array;
 }
