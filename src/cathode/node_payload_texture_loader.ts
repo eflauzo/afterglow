@@ -5,8 +5,8 @@ import { CxNodePayload } from './node_payload'
 export class CxNodePayloadTexture implements CxNodePayload {
 
     url: string;
-    loading_started:boolean;
-    texture:WebGLTexture; // TODO fix this
+    loading_started: boolean;
+    texture: WebGLTexture; // TODO fix this
 
     constructor(url: string) {
         this.url = url;
@@ -14,18 +14,18 @@ export class CxNodePayloadTexture implements CxNodePayload {
         this.texture = null;
     }
 
-    load (context: CxRenderingContext):void {
-      let texture = context.gl.createTexture()
-      let image = new Image();
-      image.onload = () => {
-        this.handleTextureLoaded(context.gl, image, texture);
-      }
-      console.log("loading:", this.url)
-      image.src = this.url;
+    load(context: CxRenderingContext): void {
+        let texture = context.gl.createTexture()
+        let image = new Image();
+        image.onload = () => {
+            this.handleTextureLoaded(context.gl, image, texture);
+        }
+        console.log("loading:", this.url)
+        image.src = this.url;
 
     }
 
-    handleTextureLoaded(gl:any, image:HTMLImageElement, texture:any) {
+    handleTextureLoaded(gl: any, image: HTMLImageElement, texture: any) {
         console.log("loading:", this.url)
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
@@ -38,20 +38,19 @@ export class CxNodePayloadTexture implements CxNodePayload {
         console.log("texture is ready")
     }
 
-    enter(context: CxRenderingContext):void {
-        //context.rendering_program.visualize(context, this.obj)
+    enter(context: CxRenderingContext): void {
         if (!this.loading_started) {
-          this.loading_started = true;
-          this.load(context)
+            this.loading_started = true;
+            this.load(context)
         }
 
         if (this.texture != null) {
-          context.gl.bindTexture(context.gl.TEXTURE_2D, this.texture);
+            context.gl.bindTexture(context.gl.TEXTURE_2D, this.texture);
         }
 
     }
 
     exit(context: CxRenderingContext): void {
-      context.gl.bindTexture(context.gl.TEXTURE_2D, null);
+        context.gl.bindTexture(context.gl.TEXTURE_2D, null);
     }
 }

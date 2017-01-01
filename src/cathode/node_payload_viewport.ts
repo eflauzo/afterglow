@@ -16,7 +16,6 @@ export class CxNodePayloadViewport implements CxNodePayload {
 
     enable_depth_test: boolean = true
 
-
     constructor() {
     }
 

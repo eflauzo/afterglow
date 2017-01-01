@@ -51,11 +51,14 @@ export class CxRenderingContext {
         this.name_manager = new CxNameManager()
     }
 
-    reset(){
+    reset(canvas_width: number,
+          canvas_height: number){
       glmatrix.mat4.identity(this.mvMatrix)
       glmatrix.mat4.identity(this.pMatrix)
       this.mode = CxRenderingMode.CxVisualize;
       this.name = 0
+      this.canvas_width = canvas_width;
+      this.canvas_height = canvas_height;
     }
 
 }

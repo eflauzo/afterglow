@@ -38,6 +38,8 @@ export class CxRenderingProgramSelection extends CxRenderingProgram {
             0,
             0);
         context.gl.drawArrays(context.gl.TRIANGLES, 0, vertex_buf[1]);
+
+        context.gl.enable(context.gl.BLEND)
     }
 
     getFragmentShaderSource(): string {

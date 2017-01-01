@@ -59,7 +59,7 @@ export abstract class CxRenderingProgram implements CxNodePayload {
         // instead special selection rendering program is used
         // enter becomes noop in selection mode
         if (context.mode != CxRenderingMode.CxSelection) {
-          this.activate(context)
+            this.activate(context)
         }
     }
 
