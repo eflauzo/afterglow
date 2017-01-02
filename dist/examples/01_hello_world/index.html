@@ -7,11 +7,11 @@
 
 </head>
 <body>
-
-  <canvas id="screen01" style="border: none;" width="425" height="330"></canvas>
+  
+  <canvas id="screen01" style="border: solid; height: 90vh; width: 90vw; display: block;"></canvas>
 
   <script type="module">
-      // demonstration of visualization and selection using cathode structure 
+      // demonstration of visualization and selection using cathode structure
 
       import {CxDisplay,
         CxNode,
@@ -80,11 +80,9 @@
       var name_node = new CxNode([new CxNodePayloadName(4)])
 
       var transform = new CxNodePayloadTransform()
-      transform.translate = [-0.5, 0.0, -5.0]
+      transform.translate = [ -1.7, 0.9, -5.0]
 
       var transform_node = new CxNode([transform])
-      //var root_node = new CxNode([generic_rendering_program])
-
 
       var visualizer_node = new CxNode([
           new CxNodePayloadVisualizer(new HelloWorldTriangle(true))
@@ -106,10 +104,12 @@
 
       canva.onmousemove = function(e) {
         let rect = canva.getBoundingClientRect();
-        let x = (e.clientX - rect.left) / (rect.right - rect.left) * canva.width
-        let y = (e.clientY - rect.top) / (rect.bottom - rect.top) * canva.height
+        let x = (e.clientX - rect.left) / (rect.right - rect.left) * canva.clientWidth
+        let y = (e.clientY - rect.top) / (rect.bottom - rect.top) * canva.clientHeight
+        x = Math.round(x);
+        y = Math.round(y);
         let name_color = interactive_payload.name_color_at(x, y);
-        console.log('Selected:', CxNameManager.fromColor(name_color));
+        console.log("@ x:",x," y:",y,' selected:', CxNameManager.fromColor(name_color));
       }
 
     display.start(root)

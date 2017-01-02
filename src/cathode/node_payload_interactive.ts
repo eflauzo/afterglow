@@ -23,9 +23,6 @@ export class CxNodePayloadInteractive implements CxNodePayload {
     }
 
     enter(context: CxRenderingContext): void {
-        //set selection mode
-        //load rendering program
-
         context.gl.clearColor(0.0, 0.0, 0.0, 1.0)
         context.gl.clear(context.gl.COLOR_BUFFER_BIT)
 
