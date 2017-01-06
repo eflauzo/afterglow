@@ -4,9 +4,22 @@
 
   <script src="../../../node_modules/browser-es-module-loader/dist/babel-browser-build.js"></script>
   <script src="../../../node_modules/browser-es-module-loader/dist/browser-es-module-loader.js"></script>
+  <!--
+  <link href="https://fonts.googleapis.com/css?family=Audiowide" rel="stylesheet">
+  -->
+  <link href="https://fonts.googleapis.com/css?family=Jura" rel="stylesheet">
+
+
+<style>
+@font-face {
+  font-family: "GoodTimes";
+  src: url(good-times.regular.ttf) format("truetype");
+}
+</style>
 
 </head>
 <body>
+  <div style="font-family: GoodTimes; display: none">.</div>
 
   <canvas id="screen01" style="border: solid; height: 90vh; width: 90vw; display: block;"></canvas>
 
@@ -28,7 +41,7 @@
         CxNodePayloadTextureFont,
         CxNameManager
         } from "../../cathode.js"
-        
+
       //
       //     root
       //       |
@@ -69,7 +82,12 @@
 
       var transform_node = new CxNode([transform])
 
-      var visualizer_node = new CxNode([new CxNodePayloadLabel()])
+      var fontx = new CxNodePayloadTextureFont("GoodTimes",14, "blue")
+
+      var label = new CxNodePayloadLabel(fontx, "");
+      label.text = "There SPP: 345.57 psi"
+
+      var visualizer_node = new CxNode([label])
 
       var root = new CxNode([]);
 

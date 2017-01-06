@@ -11,10 +11,10 @@ export class CxNodePayloadLabel extends CxObject implements CxNodePayload {
     font: CxNodePayloadTextureFont;
     visualizer: CxNodePayloadVisualizer;
 
-    constructor() {
+    constructor(font:CxNodePayloadTextureFont, text:string) {
         super(false);
-        this.text = "Lorem Ipsum Neque porro quisquam est qui dolorem ipsum quia dolor sit"
-        this.font = new CxNodePayloadTextureFont("Helvetica", 30)
+        this.text = text; //"Lorem Ipsum Neque porro quisquam est qui dolorem ipsum quia dolor sit"
+        this.font = font;//new CxNodePayloadTextureFont("Helvetica", 30)
         this.visualizer = new CxNodePayloadVisualizer(this)
     }
 

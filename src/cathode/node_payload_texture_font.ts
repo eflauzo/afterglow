@@ -32,17 +32,19 @@ export class CxNodePayloadTextureFont implements CxNodePayload {
 
     loading_started: boolean;
     texture: WebGLTexture; // TODO fix this
+    fillStyle: string;
 
     font_canvas_width: number;
     font_canvas_height: number;
     font_tex_coords: Map<string, CxTexChar> = new Map<string, CxTexChar>();
 
-    constructor(font: string, size: number) {
+    constructor(font: string, size: number, fillStyle:string="") {
         //this.url = url;
         this.font = font;
         this.size = size;
         this.start_char = ' ';
         this.end_char = '~'
+        this.fillStyle = fillStyle;
         this.loading_started = false;
         this.texture = null;
 
@@ -94,7 +96,12 @@ export class CxNodePayloadTextureFont implements CxNodePayload {
                 (pos_x + char_w) / canvas_width,
                 tex_y1 / canvas_height,
                 char_w / char_h));
+
+            ctx.fillStyle = this.fillStyle;
             ctx.fillText(character, pos_x, pos_y);
+            ctx.fillText(character, pos_x, pos_y);
+            //ctx.fillText(character, pos_x, pos_y);
+            //ctx.fillText(character, pos_x, pos_y);
             current_x += char_w;
         }
 
