@@ -2,6 +2,7 @@ import * as glmatrix from "gl-matrix";
 import { CxRenderingProgram }  from './rendering_program'
 import { CxXYWH } from './basic_types'
 import { CxNameManager } from './name_manager'
+import { CxRenderingProgramManager } from './rendering_program_manager'
 
 // Enum identifies rendering mode
 export enum CxRenderingMode {
@@ -37,6 +38,7 @@ export class CxRenderingContext {
     // last name (used by selection rendering program)
     name: number;
     name_manager: CxNameManager;
+    rendering_program_manager: CxRenderingProgramManager;
 
     constructor(gl: WebGLRenderingContext,
         canvas_width: number,
@@ -49,6 +51,7 @@ export class CxRenderingContext {
         this.canvas_width = canvas_width;
         this.canvas_height = canvas_height;
         this.name_manager = new CxNameManager()
+        this.rendering_program_manager = new CxRenderingProgramManager()
     }
 
     reset(canvas_width: number,

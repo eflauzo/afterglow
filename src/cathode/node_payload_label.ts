@@ -5,6 +5,7 @@ import { CxXYZ } from './basic_types'
 import { CxNodePayloadTextureFont, CxTexChar } from './node_payload_texture_font'
 import { CxNodePayloadVisualizer } from './node_payload_visualizer'
 import * as glmatrix from "gl-matrix";
+import { CxRenderingProgramTextured } from './rendering_program_textured'
 
 export class CxNodePayloadLabel extends CxObject implements CxNodePayload {
     text: string;
@@ -15,7 +16,7 @@ export class CxNodePayloadLabel extends CxObject implements CxNodePayload {
         super(false);
         this.text = text; //"Lorem Ipsum Neque porro quisquam est qui dolorem ipsum quia dolor sit"
         this.font = font;//new CxNodePayloadTextureFont("Helvetica", 30)
-        this.visualizer = new CxNodePayloadVisualizer(this)
+        this.visualizer = new CxNodePayloadVisualizer(CxRenderingProgramTextured, this)
     }
 
     vertices(context: CxRenderingContext): Float32Array {

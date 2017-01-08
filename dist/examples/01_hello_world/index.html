@@ -7,7 +7,7 @@
 
 </head>
 <body>
-  
+
   <canvas id="screen01" style="border: solid; height: 90vh; width: 90vw; display: block;"></canvas>
 
   <script type="module">
@@ -85,7 +85,7 @@
       var transform_node = new CxNode([transform])
 
       var visualizer_node = new CxNode([
-          new CxNodePayloadVisualizer(new HelloWorldTriangle(true))
+          new CxNodePayloadVisualizer(CxRenderingProgramGeneric, new HelloWorldTriangle(true))
         ]
       )
 
