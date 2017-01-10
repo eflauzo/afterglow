@@ -42,7 +42,8 @@
         CxNodePayloadLabel,
         CxNodePayloadTextureFont,
         CxNameManager,
-        CxRadialShape
+        CxRadialShape,
+        CxStation
         } from "../../cathode.js"
 
       //
@@ -128,10 +129,12 @@
                                     0.01,
                                     false);
 
-
+      var station = new CxStation([-0.3, -0.3, 0.0], 0.05)
 
       //var visualizer_node = new CxNode([label, house])
-      var visualizer_node = new CxNode([house, house_glow])
+      var visualizer_node = new CxNode([house, house_glow, station])
+
+      //var visualizer_node = new CxNode([station])
 
       var root = new CxNode([]);
 

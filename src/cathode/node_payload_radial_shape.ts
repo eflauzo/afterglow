@@ -19,6 +19,8 @@ export class CxRadialShape extends CxObject implements CxNodePayload {
     xy_points: Array<Array<number>>;
     start_mult: number;
     width:number;
+    size_mult: number = 1.0;
+
     visualizer: CxNodePayloadVisualizer;
 
 
@@ -89,10 +91,15 @@ export class CxRadialShape extends CxObject implements CxNodePayload {
 
         //triangle 1
 
-        p0_x = p0_x * this.start_mult
-        p0_y = p0_y * this.start_mult
-        p1_x = p1_x * this.start_mult
-        p1_y = p1_y * this.start_mult
+        p0_x = (p0_x * this.start_mult * this.size_mult) + this.pos[0]
+        p0_y = (p0_y * this.start_mult * this.size_mult) + this.pos[1]
+        p1_x = (p1_x * this.start_mult * this.size_mult) + this.pos[0]
+        p1_y = (p1_y * this.start_mult * this.size_mult) + this.pos[1]
+
+        p2_x = (p2_x * this.size_mult) + this.pos[0]
+        p2_y = (p2_y * this.size_mult) + this.pos[1]
+        p3_x = (p3_x * this.size_mult) + this.pos[0]
+        p3_y = (p3_y * this.size_mult) + this.pos[1]
 
         //p0
         result.push(p0_x);

@@ -3,6 +3,7 @@ import { CxRenderingProgram }  from './rendering_program'
 import { CxXYWH } from './basic_types'
 import { CxNameManager } from './name_manager'
 import { CxRenderingProgramManager } from './rendering_program_manager'
+import { CxStyle } from './style'
 
 // Enum identifies rendering mode
 export enum CxRenderingMode {
@@ -39,6 +40,7 @@ export class CxRenderingContext {
     name: number;
     name_manager: CxNameManager;
     rendering_program_manager: CxRenderingProgramManager;
+    style: CxStyle;
 
     constructor(gl: WebGLRenderingContext,
         canvas_width: number,
@@ -52,6 +54,7 @@ export class CxRenderingContext {
         this.canvas_height = canvas_height;
         this.name_manager = new CxNameManager()
         this.rendering_program_manager = new CxRenderingProgramManager()
+        this.style = new CxStyle()
     }
 
     reset(canvas_width: number,
@@ -62,6 +65,8 @@ export class CxRenderingContext {
         this.name = 0
         this.canvas_width = canvas_width;
         this.canvas_height = canvas_height;
+        this.style.contour_size = 1.0/this.canvas_width
+        this.style.glow_size = (1.0/this.canvas_width) * 3.0
     }
 
 }
