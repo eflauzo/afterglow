@@ -1,4 +1,5 @@
 import * as glmatrix from "gl-matrix";
+//import * as glmatrix_invert from "gl-matrix-invert";
 import { CxRenderingProgram }  from './rendering_program'
 import { CxXYWH } from './basic_types'
 import { CxNameManager } from './name_manager'
@@ -19,6 +20,8 @@ export class CxRenderingContext {
 
     // projection matrix
     pMatrix: glmatrix.mat4;
+
+    normalMatrix: glmatrix.mat4;
 
     // webgl opengl rendering context
     gl: WebGLRenderingContext;
@@ -47,6 +50,8 @@ export class CxRenderingContext {
         canvas_height: number) {
         this.mvMatrix = glmatrix.mat4.create();
         this.pMatrix = glmatrix.mat4.create();
+        this.normalMatrix = glmatrix.mat4.create();
+        //this.normalMatrix = null
         this.current_relative_viewport = [0.0, 0.0, 1.0, 1.0]
         this.gl = gl;
         this.rendering_program = null;
@@ -67,6 +72,15 @@ export class CxRenderingContext {
         this.canvas_height = canvas_height;
         this.style.contour_size = 1.0/this.canvas_width
         this.style.glow_size = (1.0/this.canvas_width) * 3.0
+        this.updateNormalMatrix()
+    }
+
+    updateNormalMatrix() {
+      //this.normalMatrix =
+      glmatrix.mat4.invert(this.normalMatrix, this.mvMatrix );
+      //this.normalMatrix = this.normalMatrix.transpose();
+
+      glmatrix.mat4.transpose(this.normalMatrix, this.normalMatrix)
     }
 
 }

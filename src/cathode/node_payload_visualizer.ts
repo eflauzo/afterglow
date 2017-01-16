@@ -20,6 +20,14 @@ export class CxNodePayloadVisualizer implements CxNodePayload {
           let prog = context.rendering_program_manager.get_program(context, this.rendering_program);
           prog.activate(context)
         }
+
+        this.obj.preorder(context)
+
+        // two sided rendering
+        context.gl.enable(context.gl.CULL_FACE);
+        context.gl.cullFace(context.gl.FRONT);
+        context.rendering_program.visualize(context, this.obj)
+        context.gl.cullFace(context.gl.BACK);
         context.rendering_program.visualize(context, this.obj)
     }
 

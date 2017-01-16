@@ -13,12 +13,15 @@ export abstract class CxObject {
     _tex_buffer: WebGLBuffer
     _tex_count: number
 
+    _normal_buffer: WebGLBuffer
+    _normal_count: number
 
     constructor(is_static: boolean) {
         this.is_static = is_static;
         this._vertex_buffer = null;
         this._color_buffer = null;
         this._tex_buffer = null;
+        this._normal_buffer = null;
     }
 
     getVertexBuffer(context: CxRenderingContext): [WebGLBuffer, number] {
@@ -47,6 +50,19 @@ export abstract class CxObject {
         return [this._color_buffer, this._color_count];
     }
 
+    getNormalBuffer(context: CxRenderingContext): [WebGLBuffer, number] {
+        if ((this._normal_buffer == null) || (!this.is_static)) {
+            this._normal_buffer = context.gl.createBuffer();
+            context.gl.bindBuffer(context.gl.ARRAY_BUFFER, this._normal_buffer);
+            var normal_array: Float32Array = this.normals(context);
+            context.gl.bufferData(context.gl.ARRAY_BUFFER,
+                normal_array,
+                context.gl.STATIC_DRAW);
+            this._normal_count = normal_array.length / 4;
+        }
+        return [this._normal_buffer, this._normal_count];
+    }
+
     getTexBuffer(context: CxRenderingContext): [WebGLBuffer, number] {
         if ((this._tex_buffer == null) || (!this.is_static)) {
             this._tex_buffer = context.gl.createBuffer();
@@ -60,8 +76,9 @@ export abstract class CxObject {
         return [this._tex_buffer, this._tex_count];
     }
 
-
+    abstract preorder(context: CxRenderingContext): void;
     abstract vertices(context: CxRenderingContext): Float32Array;
     abstract colors(context: CxRenderingContext): Float32Array;
     abstract texture(context: CxRenderingContext): Float32Array;
+    abstract normals(context: CxRenderingContext): Float32Array;
 }

@@ -10,9 +10,6 @@ import { CxRenderingProgramGeneric } from './rendering_program_generic'
 
 export class CxRadialShape extends CxObject implements CxNodePayload {
 
-    //angle:number = 45.0;
-    //znear:number = 0.1;
-    //zfar:number = 100.0;
     pos: CxXYZ;
     start_color: CxRGBA;
     end_color: CxRGBA;
@@ -44,14 +41,9 @@ export class CxRadialShape extends CxObject implements CxNodePayload {
     vertices(context: CxRenderingContext): Float32Array {
       let result = new Array<number>()
 
-
       let prew_point:Array<number> = null;
-      //console.log("-")
 
       for (let point of this.xy_points) {
-        // iterate_clock_wise as quads
-        // generate triangels
-        //console.log("1")
 
         if (prew_point == null) {
           prew_point = point;
@@ -139,10 +131,6 @@ export class CxRadialShape extends CxObject implements CxNodePayload {
 
     colors(context: CxRenderingContext): Float32Array {
 
-      // result = [
-      //   this.color[0], this.color[0], this.color[0]
-      // ]
-
       let result = new Array<number>()
 
       for (var i = 0; i < this.xy_points.length-1; i++) {
@@ -189,24 +177,15 @@ export class CxRadialShape extends CxObject implements CxNodePayload {
         return new Float32Array([])
     }
 
+    normals(context: CxRenderingContext): Float32Array {
+        return new Float32Array([])
+    }
+
+    preorder(context: CxRenderingContext): Float32Array {
+        return new Float32Array([])
+    }
+
     enter(context: CxRenderingContext): void {
-
-        //TODO fix static mode
-        //for
-
-        //for
-
-        /*
-        let width = context.current_relative_viewport[2]
-        let height = context.current_relative_viewport[3]
-
-        glmatrix.mat4.identity(context.pMatrix)
-        glmatrix.mat4.perspective(context.pMatrix,
-                                  this.angle,
-                                  width / height,
-                                  this.znear,
-                                  this.zfar);
-        */
         this.visualizer.enter(context)
     }
 

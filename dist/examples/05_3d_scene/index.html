@@ -1,0 +1,189 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+
+  <script src="../../../node_modules/browser-es-module-loader/dist/babel-browser-build.js"></script>
+  <script src="../../../node_modules/browser-es-module-loader/dist/browser-es-module-loader.js"></script>
+  <!--
+  <link href="https://fonts.googleapis.com/css?family=Audiowide" rel="stylesheet">
+  -->
+  <link href="https://fonts.googleapis.com/css?family=Jura" rel="stylesheet">
+
+
+<style>
+@font-face {
+  font-family: "GoodTimes";
+  src: url(good-times.regular.ttf) format("truetype");
+}
+</style>
+
+</head>
+<body>
+  <div style="font-family: GoodTimes; display: none">.</div>
+
+  <canvas id="screen01" style="border: solid; height: 90vh; width: 90vw; display: block;"></canvas>
+
+  <script type="module">
+      // demonstration of visualization and selection using cathode structure
+
+      import {CxDisplay,
+        CxNode,
+        //CxRenderingProgramTextured,
+        //CxRenderingProgramGeneric,
+        CxRenderingProgramAngularAlpha,
+        CxRadialShapeGlow,
+        CxObject,
+        CxNodePayloadVisualizer,
+        CxNodePayloadViewport,
+        CxNodePayloadPerspective,
+        CxNodePayloadOrtho,
+        CxNodePayloadTransform,
+        CxNodePayloadInteractive,
+        CxNodePayloadName,
+        CxNodePayloadLabel,
+        CxNodePayloadTextureFont,
+        CxNameManager,
+        CxRadialShape,
+        CxStation,
+        CxCylinder
+        } from "../../cathode.js"
+
+      //
+      //     root
+      //       |
+      //       - interactive
+      //       \    |
+      //        \---- Viewport
+      //               |
+      //               - perspective projection node
+      //                   |
+      //                   - rendering program
+      //                       |
+      //                        - translate & texture
+      //                             |
+      //                             - Name
+      //                                  |
+      //                                - Label
+      //
+      //
+
+      let house_width = 0.4
+      let house_height = 0.2;
+      let half_width = house_width / 2.0;
+      let haft_height = house_height / 2.0;
+      let offset_bottom = haft_height * 0.5;
+      let offset_left = half_width * 0.1;
+
+      let house_coords = [
+        [-(half_width - offset_left),  house_height],  //left-top
+        [ half_width,  house_height],  //right-top
+        [ half_width, -(house_height - offset_bottom)],   //bottom-right
+        [ offset_left, -(house_height - offset_bottom)], //bottom middle
+        [ 0.0, -house_height], //bottom middle edge
+        [ -half_width, -house_height], //bottom left
+        [ -half_width, 0.0], //left middle
+        [ -(half_width - offset_left),  (haft_height * 0.1)], //left middle edge
+        [ -(half_width - offset_left),  house_height]  //left-top
+      ]
+
+
+      var display = new CxDisplay("screen01");
+
+      var interactive_payload = new CxNodePayloadInteractive()
+
+      var interactive_node = new CxNode([interactive_payload])
+
+      let viewport_payload = new CxNodePayloadViewport()
+      viewport_payload.clear_color = [0.1, 0.1, 0.2, 1.0]
+      var viewport_node = new CxNode([viewport_payload])
+
+      var perspective_node = new CxNode([new CxNodePayloadOrtho()])
+
+
+
+      //var perspective_node = new CxNode([new CxNodePayloadPerspective()])
+
+      //var generic_rendering_program_node = new CxNode([new CxRenderingProgramTextured()]);
+
+      //var generic_rendering_program_node = new CxNode([new CxRenderingProgramGeneric()]);
+
+      var generic_rendering_program_node = new CxNode([new CxRenderingProgramAngularAlpha()]);
+
+
+      var name_node = new CxNode([new CxNodePayloadName(4)])
+
+      var transform = new CxNodePayloadTransform()
+      transform.translate = [ 0.5, 0.5, 0.0]
+      transform.rotate = [ 3.14/4.0, 0.0, 0.0]
+      transform.scale = [ 0.1, 0.1, 0.1]
+
+      var transform_node = new CxNode([transform])
+
+      var fontx = new CxNodePayloadTextureFont("GoodTimes",14, "blue")
+
+      var label = new CxNodePayloadLabel(fontx, "");
+      label.text = "There SPP: 345.57 psi"
+
+
+      var house = new CxRadialShape([0.0, 0.0, 0.0],
+                                    [0.01, 0.01, 0.35, 1.0],
+                                    [0.01, 0.01, 0.40, 1.0],
+                                    house_coords,
+                                    0.0,
+                                    0.0,
+                                    false);
+
+                                    /*
+      var house_glow = new CxRadialShape([0.0, 0.0, 0.0],
+                                    [0.1, 0.1, 0.8, 0.2],
+                                    [0.1, 0.1, 0.7, 0.0],
+                                    house_coords,
+                                    1.0,
+                                    0.01,
+                                    false);
+
+
+      var object = new CxStation([-0.3, -0.3, 0.0], 0.05)
+      */
+
+      var cylinder = new CxCylinder([0.0, 0.0, 0.0], 1.0, 1.0)
+
+      //var visualizer_node = new CxNode([label, house])
+      //var visualizer_node = new CxNode([house, house_glow, station])
+
+      var visualizer_node = new CxNode([cylinder, house])
+
+      //var visualizer_node = new CxNode([station])
+
+      var root = new CxNode([]);
+
+      root.items.push(interactive_node)
+      root.items.push(viewport_node)
+      interactive_node.items.push(viewport_node)
+      viewport_node.items.push(perspective_node)
+      perspective_node.items.push(generic_rendering_program_node)
+      generic_rendering_program_node.items.push(transform_node)
+      transform_node.items.push(name_node)
+      name_node.items.push(visualizer_node)
+
+      let canva = document.getElementById("screen01");
+
+      canva.onmousemove = function(e) {
+        let rect = canva.getBoundingClientRect();
+        let x = (e.clientX - rect.left) / (rect.right - rect.left) * canva.clientWidth
+        let y = (e.clientY - rect.top) / (rect.bottom - rect.top) * canva.clientHeight
+        x = Math.round(x);
+        y = Math.round(y);
+
+        transform.rotate = [ 2.5 * 3.14 * (y / canva.clientHeight), 2.5 * 3.14 * (x/canva.clientWidth), 0.0]
+
+        let name_color = interactive_payload.name_color_at(x, y);
+        console.log("@ x:",x," y:",y,' selected:', CxNameManager.fromColor(name_color));
+      }
+
+    display.start(root)
+
+  </script>
+
+</body>
+</html>

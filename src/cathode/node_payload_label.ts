@@ -48,6 +48,14 @@ export class CxNodePayloadLabel extends CxObject implements CxNodePayload {
         return new Float32Array([])
     }
 
+    normals(context: CxRenderingContext): Float32Array {
+        return new Float32Array([])
+    }
+
+    preorder(context: CxRenderingContext): Float32Array {
+        return new Float32Array([])
+    }
+
     texture(context: CxRenderingContext): Float32Array {
         let result = new Array<number>()
         let carret: number = 0.0;
@@ -78,4 +86,6 @@ export class CxNodePayloadLabel extends CxObject implements CxNodePayload {
         this.visualizer.exit(context)
         this.font.exit(context)
     }
+
+
 }

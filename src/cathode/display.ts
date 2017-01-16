@@ -44,7 +44,7 @@ export class CxDisplay {
     this.context.reset(this.canvas.width, this.canvas.height);
     //TODO: update canvas width, height from canvas element
     this.root.render(this.context);
-    window.setTimeout(this.render, 500);
+    window.setTimeout(this.render, 250);
   }
 
 }
