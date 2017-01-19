@@ -1,4 +1,4 @@
-import { CxObject } from './renderable'
+import { CxGeometry } from './geometry'
 import { CxRenderingContext } from './rendering_context'
 import { CxRenderingProgram } from './rendering_program'
 
@@ -25,41 +25,6 @@ export class CxRenderingProgramAngularAlpha extends CxRenderingProgram {
         this.mvMatrixUniform = context.gl.getUniformLocation(this.shaderProgram, "uMVMatrix");
         this.normalMatrixUniform = context.gl.getUniformLocation(this.shaderProgram, "uNormalMatrix");
     }
-
-    visualize(context: CxRenderingContext, obj: CxObject): void {
-
-        context.gl.useProgram(this.shaderProgram)
-
-        context.gl.uniformMatrix4fv(this.pMatrixUniform, false, context.pMatrix);
-        context.gl.uniformMatrix4fv(this.mvMatrixUniform, false, context.mvMatrix);
-        context.gl.uniformMatrix4fv(this.normalMatrixUniform, false, context.normalMatrix);
-        context.gl.uniform4fv(this.colorUniform, [0.2, 1.0, 0.2, 1.0]);
-
-        var vertex_buf: [WebGLBuffer, number] = obj.getVertexBuffer(context)
-        context.gl.enableVertexAttribArray(this.vertexPositionAttribute);
-        context.gl.bindBuffer(context.gl.ARRAY_BUFFER, vertex_buf[0]);
-        context.gl.vertexAttribPointer(this.vertexPositionAttribute,
-            3, // 3 values per axis
-            context.gl.FLOAT,
-            false,
-            0,
-            0);
-
-        var normal_buf: [WebGLBuffer, number] = obj.getNormalBuffer(context)
-        context.gl.enableVertexAttribArray(this.vertexNormalAttribute);
-        context.gl.bindBuffer(context.gl.ARRAY_BUFFER, normal_buf[0]);
-        context.gl.vertexAttribPointer(this.vertexNormalAttribute,
-            3, // 3 coord per normal
-            context.gl.FLOAT,
-            false,
-            0,
-            0);
-        context.gl.drawArrays(context.gl.TRIANGLES, 0, vertex_buf[1]);
-
-
-    }
-
-
 
     getFragmentShaderSource(): string {
         return `precision mediump float;

@@ -1,23 +1,20 @@
 import { CxRenderingContext } from './rendering_context'
-import { CxObject } from './renderable'
-import { CxNodePayload } from './node_payload'
-import * as glmatrix from "gl-matrix";
+import { CxGeometry } from './geometry'
+//import { CxNodePayload } from './node_payload'
+//import * as glmatrix from "gl-matrix";
 import { CxXYZ,
     CxRGBA
 } from './basic_types'
-import { CxNodePayloadVisualizer } from './node_payload_visualizer'
-import { CxRenderingProgramAngularAlpha } from './rendering_program_angular_alpha'
+//import { CxNodePayloadVisualizer } from './node_payload_visualizer'
+//import { CxRenderingProgramAngularAlpha } from './rendering_program_angular_alpha'
 
-export class CxCylinder extends CxObject implements CxNodePayload {
+export class CxCylinder implements CxGeometry {
 
     pos: CxXYZ;
-    color: CxRGBA;
     h: number;
     r: number
     sections: number = 3;
     segments: number = 24;
-    visualizer: CxNodePayloadVisualizer;
-
 
     points_array: Array<number>
     color_array: Array<number>
@@ -28,12 +25,9 @@ export class CxCylinder extends CxObject implements CxNodePayload {
         r: number,
         h: number
     ) {
-        super(true);
         this.pos = pos;
         this.r = r;
         this.h = h;
-        this.color = [1.0, 0.0, 1.0, 1.0]
-        this.visualizer = new CxNodePayloadVisualizer(CxRenderingProgramAngularAlpha, this)
     }
 
     preorder(context: CxRenderingContext): void {
@@ -115,10 +109,10 @@ export class CxCylinder extends CxObject implements CxNodePayload {
                 this.normals_array.push(n0_y);
                 this.normals_array.push(n0_z);
 
-                this.color_array.push(this.color[0])
-                this.color_array.push(this.color[1])
-                this.color_array.push(this.color[2])
-                this.color_array.push(this.color[3])
+                // this.color_array.push(this.color[0])
+                // this.color_array.push(this.color[1])
+                // this.color_array.push(this.color[2])
+                // this.color_array.push(this.color[3])
 
                 this.tex_array.push(t0_x);
                 this.tex_array.push(t0_y);
@@ -133,10 +127,10 @@ export class CxCylinder extends CxObject implements CxNodePayload {
                 this.normals_array.push(n1_y);
                 this.normals_array.push(n1_z);
 
-                this.color_array.push(this.color[0])
-                this.color_array.push(this.color[1])
-                this.color_array.push(this.color[2])
-                this.color_array.push(this.color[3])
+                // this.color_array.push(this.color[0])
+                // this.color_array.push(this.color[1])
+                // this.color_array.push(this.color[2])
+                // this.color_array.push(this.color[3])
 
                 this.tex_array.push(t1_x);
                 this.tex_array.push(t0_y);
@@ -151,10 +145,10 @@ export class CxCylinder extends CxObject implements CxNodePayload {
                 this.normals_array.push(n3_y);
                 this.normals_array.push(n3_z);
 
-                this.color_array.push(this.color[0])
-                this.color_array.push(this.color[1])
-                this.color_array.push(this.color[2])
-                this.color_array.push(this.color[3])
+                // this.color_array.push(this.color[0])
+                // this.color_array.push(this.color[1])
+                // this.color_array.push(this.color[2])
+                // this.color_array.push(this.color[3])
 
                 this.tex_array.push(t1_x);
                 this.tex_array.push(t1_y);
@@ -170,10 +164,10 @@ export class CxCylinder extends CxObject implements CxNodePayload {
                 this.normals_array.push(n0_y);
                 this.normals_array.push(n0_z);
 
-                this.color_array.push(this.color[0])
-                this.color_array.push(this.color[1])
-                this.color_array.push(this.color[2])
-                this.color_array.push(this.color[3])
+                // this.color_array.push(this.color[0])
+                // this.color_array.push(this.color[1])
+                // this.color_array.push(this.color[2])
+                // this.color_array.push(this.color[3])
 
                 this.tex_array.push(t0_x);
                 this.tex_array.push(t0_y);
@@ -188,10 +182,10 @@ export class CxCylinder extends CxObject implements CxNodePayload {
                 this.normals_array.push(n3_y);
                 this.normals_array.push(n3_z);
 
-                this.color_array.push(this.color[0])
-                this.color_array.push(this.color[1])
-                this.color_array.push(this.color[2])
-                this.color_array.push(this.color[3])
+                // this.color_array.push(this.color[0])
+                // this.color_array.push(this.color[1])
+                // this.color_array.push(this.color[2])
+                // this.color_array.push(this.color[3])
 
                 this.tex_array.push(t1_x);
                 this.tex_array.push(t1_y);
@@ -206,10 +200,10 @@ export class CxCylinder extends CxObject implements CxNodePayload {
                 this.normals_array.push(n2_y);
                 this.normals_array.push(n2_z);
 
-                this.color_array.push(this.color[0])
-                this.color_array.push(this.color[1])
-                this.color_array.push(this.color[2])
-                this.color_array.push(this.color[3])
+                // this.color_array.push(this.color[0])
+                // this.color_array.push(this.color[1])
+                // this.color_array.push(this.color[2])
+                // this.color_array.push(this.color[3])
 
                 this.tex_array.push(t0_x);
                 this.tex_array.push(t1_y);
@@ -228,7 +222,8 @@ export class CxCylinder extends CxObject implements CxNodePayload {
     }
 
     colors(context: CxRenderingContext): Float32Array {
-        return new Float32Array(this.color_array)
+        //return new Float32Array(this.color_array)
+        return new Float32Array([]);
     }
 
     texture(context: CxRenderingContext): Float32Array {
@@ -239,6 +234,7 @@ export class CxCylinder extends CxObject implements CxNodePayload {
         return new Float32Array(this.normals_array)
     }
 
+    /*
     enter(context: CxRenderingContext): void {
         this.visualizer.enter(context)
     }
@@ -246,4 +242,5 @@ export class CxCylinder extends CxObject implements CxNodePayload {
     exit(context: CxRenderingContext): void {
         this.visualizer.exit(context)
     }
+    */
 }

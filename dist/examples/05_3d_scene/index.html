@@ -30,21 +30,22 @@
         CxNode,
         //CxRenderingProgramTextured,
         //CxRenderingProgramGeneric,
-        CxRenderingProgramAngularAlpha,
-        CxRadialShapeGlow,
+        //CxRenderingProgramAngularAlpha,
+        //CxRadialShapeGlow,
+        CxVisualizerAngularAlpha,
         CxObject,
-        CxNodePayloadVisualizer,
+        //CxNodePayloadVisualizer,
         CxNodePayloadViewport,
-        CxNodePayloadPerspective,
+        //CxNodePayloadPerspective,
         CxNodePayloadOrtho,
         CxNodePayloadTransform,
         CxNodePayloadInteractive,
         CxNodePayloadName,
-        CxNodePayloadLabel,
-        CxNodePayloadTextureFont,
+        //CxNodePayloadLabel,
+        //CxNodePayloadTextureFont,
         CxNameManager,
-        CxRadialShape,
-        CxStation,
+        //CxRadialShape,
+        //CxStation,
         CxCylinder
         } from "../../cathode.js"
 
@@ -74,17 +75,17 @@
       let offset_bottom = haft_height * 0.5;
       let offset_left = half_width * 0.1;
 
-      let house_coords = [
-        [-(half_width - offset_left),  house_height],  //left-top
-        [ half_width,  house_height],  //right-top
-        [ half_width, -(house_height - offset_bottom)],   //bottom-right
-        [ offset_left, -(house_height - offset_bottom)], //bottom middle
-        [ 0.0, -house_height], //bottom middle edge
-        [ -half_width, -house_height], //bottom left
-        [ -half_width, 0.0], //left middle
-        [ -(half_width - offset_left),  (haft_height * 0.1)], //left middle edge
-        [ -(half_width - offset_left),  house_height]  //left-top
-      ]
+      // let house_coords = [
+      //   [-(half_width - offset_left),  house_height],  //left-top
+      //   [ half_width,  house_height],  //right-top
+      //   [ half_width, -(house_height - offset_bottom)],   //bottom-right
+      //   [ offset_left, -(house_height - offset_bottom)], //bottom middle
+      //   [ 0.0, -house_height], //bottom middle edge
+      //   [ -half_width, -house_height], //bottom left
+      //   [ -half_width, 0.0], //left middle
+      //   [ -(half_width - offset_left),  (haft_height * 0.1)], //left middle edge
+      //   [ -(half_width - offset_left),  house_height]  //left-top
+      // ]
 
 
       var display = new CxDisplay("screen01");
@@ -94,7 +95,10 @@
       var interactive_node = new CxNode([interactive_payload])
 
       let viewport_payload = new CxNodePayloadViewport()
-      viewport_payload.clear_color = [0.1, 0.1, 0.2, 1.0]
+      //viewport_payload.clear_color = [0.1, 0.1, 0.2, 1.0]
+      viewport_payload.clear_color = [1,1,1,1]
+
+
       var viewport_node = new CxNode([viewport_payload])
 
       var perspective_node = new CxNode([new CxNodePayloadOrtho()])
@@ -107,7 +111,7 @@
 
       //var generic_rendering_program_node = new CxNode([new CxRenderingProgramGeneric()]);
 
-      var generic_rendering_program_node = new CxNode([new CxRenderingProgramAngularAlpha()]);
+      //var generic_rendering_program_node = new CxNode([new CxRenderingProgramAngularAlpha()]);
 
 
       var name_node = new CxNode([new CxNodePayloadName(4)])
@@ -119,19 +123,19 @@
 
       var transform_node = new CxNode([transform])
 
-      var fontx = new CxNodePayloadTextureFont("GoodTimes",14, "blue")
+      //var fontx = new CxNodePayloadTextureFont("GoodTimes",14, "blue")
 
-      var label = new CxNodePayloadLabel(fontx, "");
-      label.text = "There SPP: 345.57 psi"
-
-
-      var house = new CxRadialShape([0.0, 0.0, 0.0],
-                                    [0.01, 0.01, 0.35, 1.0],
-                                    [0.01, 0.01, 0.40, 1.0],
-                                    house_coords,
-                                    0.0,
-                                    0.0,
-                                    false);
+      // var label = new CxNodePayloadLabel(fontx, "");
+      // label.text = "There SPP: 345.57 psi"
+      //
+      //
+      // var house = new CxRadialShape([0.0, 0.0, 0.0],
+      //                               [0.01, 0.01, 0.35, 1.0],
+      //                               [0.01, 0.01, 0.40, 1.0],
+      //                               house_coords,
+      //                               0.0,
+      //                               0.0,
+      //                               false);
 
                                     /*
       var house_glow = new CxRadialShape([0.0, 0.0, 0.0],
@@ -151,7 +155,10 @@
       //var visualizer_node = new CxNode([label, house])
       //var visualizer_node = new CxNode([house, house_glow, station])
 
-      var visualizer_node = new CxNode([cylinder, house])
+      var visualizer_node = new CxNode([
+        new CxVisualizerAngularAlpha(cylinder, [0.0, 0.0, 0.0, 1.0]
+        )
+      ])
 
       //var visualizer_node = new CxNode([station])
 
@@ -161,8 +168,8 @@
       root.items.push(viewport_node)
       interactive_node.items.push(viewport_node)
       viewport_node.items.push(perspective_node)
-      perspective_node.items.push(generic_rendering_program_node)
-      generic_rendering_program_node.items.push(transform_node)
+      perspective_node.items.push(transform_node)
+      //generic_rendering_program_node.items.push(transform_node)
       transform_node.items.push(name_node)
       name_node.items.push(visualizer_node)
 

@@ -27,7 +27,7 @@ export class CxRenderingContext {
     gl: WebGLRenderingContext;
 
     // currently loaded rendering program
-    rendering_program: CxRenderingProgram;
+    //rendering_program: CxRenderingProgram;
 
     // current x, y, w, h
     current_relative_viewport: CxXYWH;
@@ -54,7 +54,7 @@ export class CxRenderingContext {
         //this.normalMatrix = null
         this.current_relative_viewport = [0.0, 0.0, 1.0, 1.0]
         this.gl = gl;
-        this.rendering_program = null;
+        //this.rendering_program = null;
         this.canvas_width = canvas_width;
         this.canvas_height = canvas_height;
         this.name_manager = new CxNameManager()

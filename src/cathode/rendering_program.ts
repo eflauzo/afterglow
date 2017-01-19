@@ -1,10 +1,10 @@
 
 import { CxRenderingContext } from './rendering_context'
-import { CxObject } from './renderable'
+import { CxGeometry } from './geometry'
 import { CxNodePayload } from './node_payload'
 import { CxRenderingMode } from './rendering_context'
 
-export abstract class CxRenderingProgram implements CxNodePayload {
+export abstract class CxRenderingProgram {
     initialized: boolean;
     fragment_shader: WebGLShader;
     vertex_shader: WebGLShader;
@@ -46,29 +46,15 @@ export abstract class CxRenderingProgram implements CxNodePayload {
     }
 
     activate(context: CxRenderingContext): void {
-        context.rendering_program = this;
-    }
-
-    enter(context: CxRenderingContext): void {
         if (!this.initialized) {
             this.init(context);
             this.initialized = true;
         }
 
-        // rendering program should not be activated in selection mode
-        // instead special selection rendering program is used
-        // enter becomes noop in selection mode
-        if (context.mode != CxRenderingMode.CxSelection) {
-            this.activate(context)
-        }
-    }
-
-    exit(context: CxRenderingContext): void {
+        context.gl.useProgram(this.shaderProgram);
     }
 
     abstract configure(context: CxRenderingContext): void;
-    abstract visualize(context: CxRenderingContext, renderable: CxObject): void;
-
     abstract getFragmentShaderSource(): string;
     abstract getVertexShaderSource(): string;
 }

@@ -1,5 +1,5 @@
 import { CxRenderingContext } from './rendering_context'
-import { CxObject } from './renderable'
+import { CxGeometry } from './geometry'
 import { CxNodePayload } from './node_payload'
 import * as glmatrix from "gl-matrix";
 

@@ -15,9 +15,8 @@
 
       import {CxDisplay,
         CxNode,
-        CxRenderingProgramGeneric,
-        CxObject,
-        CxNodePayloadVisualizer,
+        CxVisualizerColorArray,
+        CxGeometry,
         CxNodePayloadViewport,
         CxNodePayloadPerspective,
         CxNodePayloadTransform,
@@ -26,14 +25,14 @@
         CxNameManager
         } from "../../cathode.js"
 
-      class HelloWorldTriangle extends CxObject {
+      class HelloWorldTriangle {
 
         preorder(context) {
         }
 
-        
+
         vertices(context) {
-          console.log("*")
+
           return new Float32Array([
              0.0,  1.0, 0.0,
             -1.0, -1.0, 0.0,
@@ -60,9 +59,8 @@
       //               |
       //               - perspective projection node
       //                   |
-      //                   - rendering program
-      //                       |
-      //                        - translate
+      //                   |
+      //                   ----- translate
       //                             |
       //                             - Name
       //                                  |
@@ -80,8 +78,6 @@
 
       var perspective_node = new CxNode([new CxNodePayloadPerspective()])
 
-      var generic_rendering_program_node = new CxNode([new CxRenderingProgramGeneric()]);
-
       var name_node = new CxNode([new CxNodePayloadName(4)])
 
       var transform = new CxNodePayloadTransform()
@@ -90,7 +86,7 @@
       var transform_node = new CxNode([transform])
 
       var visualizer_node = new CxNode([
-          new CxNodePayloadVisualizer(CxRenderingProgramGeneric, new HelloWorldTriangle(true))
+          new CxVisualizerColorArray(new HelloWorldTriangle())
         ]
       )
 
@@ -100,8 +96,7 @@
       root.items.push(viewport_node)
       interactive_node.items.push(viewport_node)
       viewport_node.items.push(perspective_node)
-      perspective_node.items.push(generic_rendering_program_node)
-      generic_rendering_program_node.items.push(transform_node)
+      perspective_node.items.push(transform_node)
       transform_node.items.push(name_node)
       name_node.items.push(visualizer_node)
 

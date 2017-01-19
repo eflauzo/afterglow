@@ -31,9 +31,6 @@
 
       import {CxDisplay,
         CxNode,
-        CxRenderingProgramTextured,
-        CxObject,
-        CxNodePayloadVisualizer,
         CxNodePayloadViewport,
         CxNodePayloadPerspective,
         CxNodePayloadOrtho,
@@ -41,7 +38,7 @@
         CxNodePayloadInteractive,
         CxNodePayloadName,
         CxNodePayloadLabel,
-        CxNodePayloadTextureFont,
+        CxTextureFont,
         CxNameManager
         } from "../../cathode.js"
 
@@ -54,9 +51,8 @@
       //               |
       //               - perspective projection node
       //                   |
-      //                   - rendering program
-      //                       |
-      //                        - translate & texture
+      //                   |
+      //                    \- translate & texture
       //                             |
       //                             - Name
       //                                  |
@@ -76,8 +72,6 @@
 
       var perspective_node = new CxNode([new CxNodePayloadOrtho()])
 
-      var generic_rendering_program_node = new CxNode([new CxRenderingProgramTextured()]);
-
       var name_node = new CxNode([new CxNodePayloadName(4)])
 
       var transform = new CxNodePayloadTransform()
@@ -85,7 +79,7 @@
 
       var transform_node = new CxNode([transform])
 
-      var fontx = new CxNodePayloadTextureFont("OCR-A",20, "grey")
+      var fontx = new CxTextureFont("OCR-A",20, "grey")
 
       var label = new CxNodePayloadLabel(fontx, "");
       label.text = "SPP: 341.057 (psi)"
@@ -98,8 +92,7 @@
       root.items.push(viewport_node)
       interactive_node.items.push(viewport_node)
       viewport_node.items.push(perspective_node)
-      perspective_node.items.push(generic_rendering_program_node)
-      generic_rendering_program_node.items.push(transform_node)
+      perspective_node.items.push(transform_node)
       transform_node.items.push(name_node)
       name_node.items.push(visualizer_node)
 

@@ -15,22 +15,21 @@
 
       import {CxDisplay,
         CxNode,
-        CxRenderingProgramTextured,
-        CxObject,
-        CxNodePayloadVisualizer,
+        CxGeometry,
+        CxVisualizerTextured,
         CxNodePayloadViewport,
         CxNodePayloadPerspective,
         CxNodePayloadTransform,
         CxNodePayloadInteractive,
         CxNodePayloadName,
-        CxNodePayloadTexture,
+        CxTextureImage,
         CxNameManager
         } from "../../cathode.js"
 
-      class HelloWorldTriangle extends CxObject {
+      class HelloWorldTriangle {
         preorder(context) {
         }
-        
+
         vertices(context) {
 
           return new Float32Array([
@@ -77,9 +76,8 @@
       //               |
       //               - perspective projection node
       //                   |
-      //                   - rendering program
-      //                       |
-      //                        - translate & texture
+      //                   |
+      //                    - translate & texture
       //                             |
       //                             - Name
       //                                  |
@@ -93,26 +91,23 @@
 
       var interactive_node = new CxNode([interactive_payload])
 
-      //var viewport_node = new CxNode([new CxNodePayloadViewport()])
       let viewport_payload = new CxNodePayloadViewport()
       viewport_payload.clear_color = [1.0, 1.0, 0.0, 1.0]
       var viewport_node = new CxNode([viewport_payload])
 
       var perspective_node = new CxNode([new CxNodePayloadPerspective()])
 
-      var generic_rendering_program_node = new CxNode([new CxRenderingProgramTextured()]);
-
       var name_node = new CxNode([new CxNodePayloadName(4)])
 
       var transform = new CxNodePayloadTransform()
       transform.translate = [-0.5, 0.0, -5.0]
 
-      var tex = new CxNodePayloadTexture("texture.png");
+      var tex = new CxTextureImage("texture.png");
 
-      var transform_node = new CxNode([transform, tex])
+      var transform_node = new CxNode([transform])
 
       var visualizer_node = new CxNode([
-          new CxNodePayloadVisualizer(CxRenderingProgramTextured, new HelloWorldTriangle(true))
+          new CxVisualizerTextured(new HelloWorldTriangle(), tex)
         ]
       )
 
@@ -122,8 +117,7 @@
       root.items.push(viewport_node)
       interactive_node.items.push(viewport_node)
       viewport_node.items.push(perspective_node)
-      perspective_node.items.push(generic_rendering_program_node)
-      generic_rendering_program_node.items.push(transform_node)
+      perspective_node.items.push(transform_node)
       transform_node.items.push(name_node)
       name_node.items.push(visualizer_node)
 

@@ -1,6 +1,6 @@
 import { CxRenderingContext,
     CxRenderingMode } from './rendering_context'
-import { CxObject } from './renderable'
+import { CxGeometry } from './geometry'
 import { CxNodePayload } from './node_payload'
 import { CxXYWH,
     CxRGBA

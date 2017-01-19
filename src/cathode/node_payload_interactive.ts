@@ -1,6 +1,6 @@
 import { CxRenderingContext,
     CxRenderingMode} from './rendering_context'
-import { CxObject } from './renderable'
+import { CxGeometry } from './geometry'
 import { CxNodePayload } from './node_payload'
 import { CxRenderingProgramSelection } from './rendering_program_selection'
 import { CxXYWH,
@@ -27,13 +27,12 @@ export class CxNodePayloadInteractive implements CxNodePayload {
         context.gl.clear(context.gl.COLOR_BUFFER_BIT)
 
         this._stored_mode = context.mode;
-        this.selection_rendering_program.enter(context)
         context.mode = CxRenderingMode.CxSelection
     }
 
     exit(context: CxRenderingContext): void {
 
-        this.selection_rendering_program.exit(context)
+        //this.selection_rendering_program.exit(context)
         context.mode = this._stored_mode;
 
         let tmp_pixels = new Uint8Array(context.canvas_width * context.canvas_height * 4);

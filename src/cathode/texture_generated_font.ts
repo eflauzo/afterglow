@@ -1,6 +1,5 @@
 import { CxRenderingContext } from './rendering_context'
-import { CxObject } from './renderable'
-import { CxNodePayload } from './node_payload'
+import { CxTexture } from './texture'
 
 export class CxTexChar {
     tex_x0: number
@@ -24,14 +23,12 @@ export class CxTexChar {
 }
 
 
-export class CxNodePayloadTextureFont implements CxNodePayload {
+export class CxTextureFont extends CxTexture {
     font: string;
     size: number;
     start_char: any;
     end_char: any;
 
-    loading_started: boolean;
-    texture: WebGLTexture; // TODO fix this
     fillStyle: string;
 
     font_canvas_width: number;
@@ -39,20 +36,19 @@ export class CxNodePayloadTextureFont implements CxNodePayload {
     font_tex_coords: Map<string, CxTexChar> = new Map<string, CxTexChar>();
 
     constructor(font: string, size: number, fillStyle:string="") {
+        super()
         //this.url = url;
         this.font = font;
         this.size = size;
         this.start_char = ' ';
         this.end_char = '~'
         this.fillStyle = fillStyle;
-        this.loading_started = false;
-        this.texture = null;
 
         this.font_canvas_width = 0;
         this.font_canvas_height = 0;
     }
 
-    generate_font(context: CxRenderingContext): void {
+    load(context: CxRenderingContext): void {
 
         var chr_code_start = this.start_char.charCodeAt(0);
         var chr_code_end = this.end_char.charCodeAt(0);
@@ -105,37 +101,7 @@ export class CxNodePayloadTextureFont implements CxNodePayload {
             current_x += char_w;
         }
 
-        let texture = context.gl.createTexture()
-        this.handleTextureLoaded(context.gl, canvas, texture);
+        this.handleTextureLoaded(context.gl, canvas);
     }
 
-
-    handleTextureLoaded(gl: any, canvas: HTMLCanvasElement, texture: any) {
-        console.log("building texture")
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-        gl.generateMipmap(gl.TEXTURE_2D);
-        gl.bindTexture(gl.TEXTURE_2D, null);
-        this.texture = texture;
-        console.log("texture is ready")
-    }
-
-    enter(context: CxRenderingContext): void {
-        if (!this.loading_started) {
-            this.loading_started = true;
-            this.generate_font(context)
-        }
-
-        if (this.texture != null) {
-            context.gl.bindTexture(context.gl.TEXTURE_2D, this.texture);
-        }
-
-    }
-
-    exit(context: CxRenderingContext): void {
-        context.gl.bindTexture(context.gl.TEXTURE_2D, null);
-    }
 }

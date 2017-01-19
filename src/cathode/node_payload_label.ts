@@ -1,22 +1,22 @@
 import { CxRenderingContext } from './rendering_context'
-import { CxObject } from './renderable'
+import { CxGeometry } from './geometry'
 import { CxNodePayload } from './node_payload'
 import { CxXYZ } from './basic_types'
-import { CxNodePayloadTextureFont, CxTexChar } from './node_payload_texture_font'
-import { CxNodePayloadVisualizer } from './node_payload_visualizer'
+import { CxTextureFont, CxTexChar } from './texture_generated_font'
+//import { CxNodePayloadVisualizer } from './node_payload_visualizer'
 import * as glmatrix from "gl-matrix";
-import { CxRenderingProgramTextured } from './rendering_program_textured'
+import { CxVisualizerTextured } from './visualizer_textured'
 
-export class CxNodePayloadLabel extends CxObject implements CxNodePayload {
+export class CxNodePayloadLabel implements CxNodePayload, CxGeometry {
     text: string;
-    font: CxNodePayloadTextureFont;
-    visualizer: CxNodePayloadVisualizer;
+    font: CxTextureFont;
+    visualizer: CxVisualizerTextured;
 
-    constructor(font:CxNodePayloadTextureFont, text:string) {
-        super(false);
+    constructor(font:CxTextureFont, text:string) {
+        //super(false);
         this.text = text; //"Lorem Ipsum Neque porro quisquam est qui dolorem ipsum quia dolor sit"
         this.font = font;//new CxNodePayloadTextureFont("Helvetica", 30)
-        this.visualizer = new CxNodePayloadVisualizer(CxRenderingProgramTextured, this)
+        this.visualizer = new CxVisualizerTextured(this, font)
     }
 
     vertices(context: CxRenderingContext): Float32Array {
@@ -52,8 +52,8 @@ export class CxNodePayloadLabel extends CxObject implements CxNodePayload {
         return new Float32Array([])
     }
 
-    preorder(context: CxRenderingContext): Float32Array {
-        return new Float32Array([])
+    preorder(context: CxRenderingContext): void {
+        //return new Float32Array([])
     }
 
     texture(context: CxRenderingContext): Float32Array {
@@ -78,13 +78,15 @@ export class CxNodePayloadLabel extends CxObject implements CxNodePayload {
     }
 
     enter(context: CxRenderingContext): void {
-        this.font.enter(context)
+        //this.font.enter(context)
+        this.font.activate(context)
         this.visualizer.enter(context)
     }
 
     exit(context: CxRenderingContext): void {
         this.visualizer.exit(context)
-        this.font.exit(context)
+        this.font.deactivate(context)
+        //this.font.exit(context)
     }
 
 
