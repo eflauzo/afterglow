@@ -18,6 +18,38 @@ export class CxRenderingProgramColorArray extends CxRenderingProgram {
         this.mvMatrixUniform = context.gl.getUniformLocation(this.shaderProgram, "uMVMatrix");
     }
 
+    /*
+    visualize(context: CxRenderingContext, obj: CxGeometry): void {
+        context.gl.useProgram(this.shaderProgram)
+
+        context.gl.uniformMatrix4fv(this.pMatrixUniform, false, context.pMatrix);
+        context.gl.uniformMatrix4fv(this.mvMatrixUniform, false, context.mvMatrix);
+
+        var vertex_buf: [WebGLBuffer, number] = obj.getVertexBuffer(context)
+        context.gl.enableVertexAttribArray(this.vertexPositionAttribute);
+        context.gl.bindBuffer(context.gl.ARRAY_BUFFER, vertex_buf[0]);
+        context.gl.vertexAttribPointer(this.vertexPositionAttribute,
+            3, // 3 values per axis
+            context.gl.FLOAT,
+            false,
+            0,
+            0);
+
+        var color_buf: [WebGLBuffer, number] = obj.getColorBuffer(context)
+        context.gl.enableVertexAttribArray(this.vertexColorAttribute);
+        context.gl.bindBuffer(context.gl.ARRAY_BUFFER, color_buf[0]);
+        context.gl.vertexAttribPointer(this.vertexColorAttribute,
+            4, // 4 values per color
+            context.gl.FLOAT,
+            false,
+            0,
+            0);
+        context.gl.drawArrays(context.gl.TRIANGLES, 0, vertex_buf[1]);
+    }
+    */
+
+
+
     getFragmentShaderSource(): string {
         return `precision mediump float;
 
