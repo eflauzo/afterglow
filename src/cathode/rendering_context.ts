@@ -73,6 +73,15 @@ export class CxRenderingContext {
         this.style.contour_size = 1.0/this.canvas_width
         this.style.glow_size = (1.0/this.canvas_width) * 3.0
         this.updateNormalMatrix()
+
+        // We want to ignore previous scrissor and clear all screen.
+        this.gl.disable(this.gl.SCISSOR_TEST)
+        this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
+
+        // but we want scissor test enabled for rest of the rendeting process
+        // to have scoped view operations.
+        this.gl.enable(this.gl.SCISSOR_TEST)
     }
 
     updateNormalMatrix() {

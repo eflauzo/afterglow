@@ -8,7 +8,7 @@ import { CxNodePayload } from './node_payload'
  * and it maintains list of children
  * @class CxNode
  */
-export class CxNode {
+export class CxNode implements CxNodePayload{
 
     payload: Array<CxNodePayload>
     items: Array<CxNode>
@@ -34,5 +34,13 @@ export class CxNode {
             item.exit(context)
         }
     }
+
+    enter(context: CxRenderingContext): void {
+      this.render(context)
+    }
+    exit(context: CxRenderingContext): void {
+
+    }
+
 
 }

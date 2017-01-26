@@ -16,10 +16,14 @@ export class CxNodePayloadViewport implements CxNodePayload {
 
     enable_depth_test: boolean = true
 
+    _stored_current_relative_viewport:CxXYWH;
+
     constructor() {
     }
 
     enter(context: CxRenderingContext): void {
+        this._stored_current_relative_viewport = <CxXYWH>context.current_relative_viewport.slice()
+
         context.current_relative_viewport = [this.viewport[0],
             this.viewport[1],
             this.viewport[2],
@@ -30,10 +34,20 @@ export class CxNodePayloadViewport implements CxNodePayload {
         let viewport_w = Math.floor(this.viewport[2] * context.canvas_width)
         let viewport_h = Math.floor(this.viewport[3] * context.canvas_height)
 
+        context.gl.scissor(viewport_x,
+            viewport_y,
+            viewport_w,
+            viewport_h);
+
         context.gl.viewport(viewport_x,
             viewport_y,
             viewport_w,
             viewport_h);
+
+        console.log("vp", viewport_x,
+            viewport_y,
+            viewport_w,
+            viewport_h)
 
         if (context.mode != CxRenderingMode.CxSelection) {
             context.gl.clearColor(this.clear_color[0],
@@ -63,5 +77,6 @@ export class CxNodePayloadViewport implements CxNodePayload {
     }
 
     exit(context: CxRenderingContext): void {
+      context.current_relative_viewport = <CxXYWH>this._stored_current_relative_viewport.slice()
     }
 }
