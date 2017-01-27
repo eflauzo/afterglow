@@ -1,11 +1,13 @@
 import { CxNode } from './node'
 import { CxRenderingContext }  from './rendering_context'
+import { CxScene } from './scene'
 
 export class CxDisplay {
 
     context: CxRenderingContext;
     canvas: HTMLCanvasElement;
-    root: CxNode
+    scene: CxScene
+
 
     constructor(canvas_id: string) {
         this.canvas = <HTMLCanvasElement>document.getElementById(canvas_id);
@@ -20,8 +22,8 @@ export class CxDisplay {
         this.context.gl.blendFunc(this.context.gl.SRC_ALPHA, this.context.gl.ONE_MINUS_SRC_ALPHA);
     }
 
-    start(root: CxNode) {
-        this.root = root
+    start(scene: CxScene) {
+        this.scene = scene
         this.render()
     }
 
@@ -39,7 +41,8 @@ export class CxDisplay {
         }
 
         this.context.reset(this.canvas.width, this.canvas.height);
-        this.root.render(this.context);
+        this.context.scene = this.scene;
+        this.scene.root.render(this.context);
         window.setTimeout(this.render, 250);
     }
 

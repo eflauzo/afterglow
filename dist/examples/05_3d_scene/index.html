@@ -46,7 +46,8 @@
         CxNameManager,
         //CxRadialShape,
         //CxStation,
-        CxCylinder
+        CxCylinder,
+        CxScene
         } from "../../cathode.js"
 
       //
@@ -87,6 +88,7 @@
       //   [ -(half_width - offset_left),  house_height]  //left-top
       // ]
 
+      let scene = new CxScene();
 
       var display = new CxDisplay("screen01");
 
@@ -188,7 +190,8 @@
         console.log("@ x:",x," y:",y,' selected:', CxNameManager.fromColor(name_color));
       }
 
-    display.start(root)
+    scene.root = root;
+    display.start(scene)
 
   </script>
 

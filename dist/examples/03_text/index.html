@@ -39,7 +39,8 @@
         CxNodePayloadName,
         CxNodePayloadLabel,
         CxTextureFont,
-        CxNameManager
+        CxNameManager,
+        CxScene
         } from "../../cathode.js"
 
       //
@@ -59,6 +60,8 @@
       //                                - Label
       //
       //
+
+      let scene = new CxScene()
 
       var display = new CxDisplay("screen01");
 
@@ -108,7 +111,8 @@
         console.log("@ x:",x," y:",y,' selected:', CxNameManager.fromColor(name_color));
       }
 
-    display.start(root)
+    scene.root = root;
+    display.start(scene)
 
   </script>
 

@@ -23,7 +23,8 @@
         CxNodePayloadInteractive,
         CxNodePayloadName,
         CxTextureImage,
-        CxNameManager
+        CxNameManager,
+        CxScene,
         } from "../../cathode.js"
 
       class HelloWorldTriangle {
@@ -85,6 +86,7 @@
       //
       //
 
+      let scene = new CxScene();
       var display = new CxDisplay("screen01");
 
       var interactive_payload = new CxNodePayloadInteractive()
@@ -133,7 +135,8 @@
         console.log("@ x:",x," y:",y,' selected:', CxNameManager.fromColor(name_color));
       }
 
-    display.start(root)
+    scene.root = root
+    display.start(scene)
 
   </script>
 
