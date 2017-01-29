@@ -44,10 +44,10 @@ export class CxNodePayloadViewport implements CxNodePayload {
             viewport_w,
             viewport_h);
 
-        console.log("vp", viewport_x,
-            viewport_y,
-            viewport_w,
-            viewport_h)
+        // console.log("vp", viewport_x,
+        //     viewport_y,
+        //     viewport_w,
+        //     viewport_h)
 
         if (context.mode != CxRenderingMode.CxSelection) {
             context.gl.clearColor(this.clear_color[0],
@@ -78,5 +78,26 @@ export class CxNodePayloadViewport implements CxNodePayload {
 
     exit(context: CxRenderingContext): void {
       context.current_relative_viewport = <CxXYWH>this._stored_current_relative_viewport.slice()
+
+      let viewport_x = Math.floor(context.current_relative_viewport[0] * context.canvas_width)
+      let viewport_y = Math.floor(context.current_relative_viewport[1] * context.canvas_height)
+      let viewport_w = Math.floor(context.current_relative_viewport[2] * context.canvas_width)
+      let viewport_h = Math.floor(context.current_relative_viewport[3] * context.canvas_height)
+
+
+      context.gl.scissor(viewport_x,
+          viewport_y,
+          viewport_w,
+          viewport_h);
+
+      context.gl.viewport(viewport_x,
+          viewport_y,
+          viewport_w,
+          viewport_h);
+
+      //context.gl.clear(context.gl.COLOR_BUFFER_BIT | context.gl.DEPTH_BUFFER_BIT)
+
     }
+
+
 }

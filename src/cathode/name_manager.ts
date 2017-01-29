@@ -4,9 +4,23 @@ export class CxNameManager {
 
     name_counter: number;
 
-    genName(): number {
+    // todo: shall it be just a vector?
+    _objects: Map<number, any> = new Map<number, any>()
+
+    constructor() {
+        this.name_counter = 0;
+    }
+
+    genName(object:any): number {
         this.name_counter += 1;
+        //console.log("name return", this.name_counter)
+        this._objects.set(this.name_counter, object);
         return this.name_counter;
+    }
+
+    getObject(name:number): any {
+      //todo use .has and fail nicely
+      return this._objects.get(name);
     }
 
     static toColor(name_value: number): CxRGBA {

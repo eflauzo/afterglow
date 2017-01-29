@@ -77,7 +77,9 @@
 
       var display = new CxDisplay("screen01");
 
-      var interactive_payload = new CxNodePayloadInteractive()
+      let canva = document.getElementById("screen01");
+
+      var interactive_payload = new CxNodePayloadInteractive(canva, scene);
 
       var interactive_node = new CxNode([interactive_payload])
 
@@ -108,42 +110,27 @@
 
       var root = new CxNode([]);
 
-      //root.items.push(interactive_node)
-      //root.items.push(viewport_node1)
-      //root.items.push(viewport_node2)
-      //interactive_node.items.push(viewport_node1)
-      //interactive_node.items.push(viewport_node2)
-      //viewport_node1.items.push(perspective_node)
-      //viewport_node2.items.push(perspective_node)
-      //perspective_node.items.push(transform_node)
-
-      //root.items.push(interactive_node)
-
       var hSplit = new CxSplit()
       hSplit.direction = CxSplitDirection.CxHorizontalSplit;
       hSplit.volume = 0.30;
 
       var vSplit = new CxSplit()
       vSplit.direction = CxSplitDirection.CxVerticalSplit;
-      //vSplit.direction = CxSplitDirection.CxHorizontalSplit;
       vSplit.volume = 0.25;
 
       var hSplit2 = new CxSplit()
       hSplit2.direction = CxSplitDirection.CxHorizontalSplit;
-      //vSplit.direction = CxSplitDirection.CxHorizontalSplit;
       hSplit2.volume = 0.60;
 
       var vSplit2 = new CxSplit()
       vSplit2.direction = CxSplitDirection.CxVerticalSplit;
-      //vSplit.direction = CxSplitDirection.CxHorizontalSplit;
       vSplit2.volume = 0.85;
 
       var hSplit3 = new CxSplit()
       hSplit3.direction = CxSplitDirection.CxHorizontalSplit;
-      //vSplit.direction = CxSplitDirection.CxHorizontalSplit;
       hSplit3.volume = 0.20;
 
-      var grid = new CxGrid();
+      var grid = new CxGrid(scene);
       grid.split.volume = 0.40;
       grid.split.direction = CxSplitDirection.CxVerticalSplit;
       grid.split.subsplitA = hSplit;
@@ -158,23 +145,17 @@
       grid.split.subsplitB.subsplitB.viewportA.clear_color = [0.0, 0.0, 0.0, 1.0]
       grid.split.subsplitB.subsplitB.sceneA = perspective_node
 
-      root.items.push(new CxNode([grid]))
+      root.items.push(interactive_node)
+
+      let grid_node = new CxNode([grid])
+
+      root.items.push(grid_node)
+
+      interactive_node.items.push(grid_node)
 
       perspective_node.items.push(transform_node)
       transform_node.items.push(name_node)
       name_node.items.push(visualizer_node)
-
-      let canva = document.getElementById("screen01");
-
-      canva.onmousemove = function(e) {
-        let rect = canva.getBoundingClientRect();
-        let x = (e.clientX - rect.left) / (rect.right - rect.left) * canva.clientWidth
-        let y = (e.clientY - rect.top) / (rect.bottom - rect.top) * canva.clientHeight
-        x = Math.round(x);
-        y = Math.round(y);
-        let name_color = interactive_payload.name_color_at(x, y);
-        console.log("@ x:",x," y:",y,' selected:', CxNameManager.fromColor(name_color));
-      }
 
     scene.root = root;
     display.start(scene)

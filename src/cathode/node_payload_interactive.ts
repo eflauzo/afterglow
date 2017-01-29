@@ -3,9 +3,19 @@ import { CxRenderingContext,
 import { CxGeometry } from './geometry'
 import { CxNodePayload } from './node_payload'
 import { CxRenderingProgramSelection } from './rendering_program_selection'
+import { CxNameManager } from './name_manager'
+import { CxScene } from './scene'
 import { CxXYWH,
     CxRGBA
 } from './basic_types'
+
+export interface CxPointerEventsProcessor {
+
+  pressed(source: CxNodePayloadInteractive, object:number, screen_x:number, screen_y:number):void;
+  moved(source: CxNodePayloadInteractive, object:number, screen_x:number, screen_y:number):void;
+  released(source: CxNodePayloadInteractive, object:number, screen_x:number, screen_y:number):void;
+
+}
 
 // Node that sets context into selection mode and captures pixels colors
 // after pass
@@ -17,9 +27,31 @@ export class CxNodePayloadInteractive implements CxNodePayload {
     _pixels_w: number;
     _pixels_h: number;
 
-    constructor() {
+    pointer_processors: Set<CxPointerEventsProcessor>;
+    _canvas: HTMLCanvasElement;
+    _scene: CxScene;
+
+    constructor(canvas: HTMLCanvasElement, scene:CxScene) {
+        this._canvas = canvas;
+        this._scene = scene;
         this.selection_rendering_program = new CxRenderingProgramSelection()
         this._pixels = null;
+        this.pointer_processors = new Set<CxPointerEventsProcessor>()
+        this._canvas.onmousemove = this.process_onmousemove;
+        this._canvas.onmouseup = this.process_onmouseup;
+        this._canvas.onmousedown = this.process_onmousedown;
+    }
+
+    addPointerEventsProcessor(processor:CxPointerEventsProcessor): void {
+      if (!this.pointer_processors.has(processor)) {
+        this.pointer_processors.add(processor);
+      }
+    }
+
+    removePointerEventsProcessor(processor:CxPointerEventsProcessor): void{
+      if (this.pointer_processors.has(processor)) {
+        this.pointer_processors.delete(processor);
+      }
     }
 
     enter(context: CxRenderingContext): void {
@@ -60,4 +92,79 @@ export class CxNodePayloadInteractive implements CxNodePayload {
             tmp_pixels[index + 3] / 255.0]
 
     }
+
+    relative_xy(e:MouseEvent):[number, number, number, number] {
+      let rect = this._canvas.getBoundingClientRect();
+      let rx = (e.clientX - rect.left) / (rect.right - rect.left)
+      let ry = (e.clientY - rect.top) / (rect.bottom - rect.top)
+      let x = Math.round(rx * this._canvas.clientWidth);
+      let y = Math.round(ry * this._canvas.clientHeight);
+      return [x, y, rx, 1.0-ry]
+    }
+
+    process_onmousemove = (e:MouseEvent) => {
+      let xyrxry:[number, number, number, number] = this.relative_xy(e);
+      let x = xyrxry[0];
+      let y = xyrxry[1];
+      let rx = xyrxry[2];
+      let ry = xyrxry[3];
+
+
+      let name_color = this.name_color_at(x, y);
+      let name = CxNameManager.fromColor(name_color);
+      let obj = this._scene.name_manager.getObject(name);
+      //console.log("@ x:",x," y:",y,' selected:', obj);
+
+      for (let proc of this.pointer_processors) {
+        proc.moved(this, obj, rx, ry);
+      }
+
+    }
+
+    process_onmousedown = (e:MouseEvent) => {
+      let xyrxry:[number, number, number, number] = this.relative_xy(e);
+      let x = xyrxry[0];
+      let y = xyrxry[1];
+      let rx = xyrxry[2];
+      let ry = xyrxry[3];
+
+      let name_color = this.name_color_at(x, y);
+      let name = CxNameManager.fromColor(name_color);
+      let obj = this._scene.name_manager.getObject(name);
+      //console.log("@ x:",x," y:",y,' selected:', obj);
+
+
+
+      for (let proc of this.pointer_processors) {
+
+        proc.pressed(this, obj, rx, ry);
+
+
+      }
+
+      if (obj != null) {
+        obj.pressed(this, obj, rx, ry)
+      }
+    }
+
+    process_onmouseup = (e:MouseEvent) => {
+      let xyrxry:[number, number, number, number] = this.relative_xy(e);
+      let x = xyrxry[0];
+      let y = xyrxry[1];
+      let rx = xyrxry[2];
+      let ry = xyrxry[3];
+
+      let name_color = this.name_color_at(x, y);
+      let name = CxNameManager.fromColor(name_color);
+      let obj = this._scene.name_manager.getObject(name);
+      //console.log("@ x:",x," y:",y,' selected:', obj);
+
+      for (let proc of this.pointer_processors) {
+
+        proc.released(this, obj, rx, ry);
+
+
+      }
+    }
+
 }

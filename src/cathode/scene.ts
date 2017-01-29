@@ -16,4 +16,8 @@ export class CxScene {
   root: CxNode;
   style: CxStyle;
 
+  constructor(){
+    this.name_manager = new CxNameManager()
+    this.style = new CxStyle()
+  }
 }

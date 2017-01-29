@@ -43,7 +43,7 @@ export class CxDisplay {
         this.context.reset(this.canvas.width, this.canvas.height);
         this.context.scene = this.scene;
         this.scene.root.render(this.context);
-        window.setTimeout(this.render, 250);
+        window.setTimeout(this.render, 100);
     }
 
 }
