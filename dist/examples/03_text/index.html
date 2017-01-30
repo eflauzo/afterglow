@@ -65,7 +65,9 @@
 
       var display = new CxDisplay("screen01");
 
-      var interactive_payload = new CxNodePayloadInteractive()
+      let canva = document.getElementById("screen01");
+
+      var interactive_payload = new CxNodePayloadInteractive(canva, scene);
 
       var interactive_node = new CxNode([interactive_payload])
 
@@ -99,17 +101,6 @@
       transform_node.items.push(name_node)
       name_node.items.push(visualizer_node)
 
-      let canva = document.getElementById("screen01");
-
-      canva.onmousemove = function(e) {
-        let rect = canva.getBoundingClientRect();
-        let x = (e.clientX - rect.left) / (rect.right - rect.left) * canva.clientWidth
-        let y = (e.clientY - rect.top) / (rect.bottom - rect.top) * canva.clientHeight
-        x = Math.round(x);
-        y = Math.round(y);
-        let name_color = interactive_payload.name_color_at(x, y);
-        console.log("@ x:",x," y:",y,' selected:', CxNameManager.fromColor(name_color));
-      }
 
     scene.root = root;
     display.start(scene)

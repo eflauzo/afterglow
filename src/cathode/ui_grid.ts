@@ -312,6 +312,10 @@ export class CxGrid extends CxUIElement {
       //transform.translate = [ 0,0, -5.0]
 
       let desired_size = 12;
+      if ( context.mode == CxRenderingMode.CxSelection) {
+        // lets make arrow bigger when it is a selection mode
+        desired_size = 16;
+      }
       let scale_x = desired_size / context.canvas_width;
       let scale_y = desired_size / context.canvas_height;
 
