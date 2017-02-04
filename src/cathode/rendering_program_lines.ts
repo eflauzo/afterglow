@@ -1,51 +1,43 @@
 import { CxGeometry } from './geometry'
 import { CxRenderingContext } from './rendering_context'
 import { CxRenderingProgram } from './rendering_program'
+import { CxNameManager } from './name_manager'
 
-
-export class CxRenderingProgramTextured extends CxRenderingProgram {
+export class CxRenderingProgramLines extends CxRenderingProgram {
 
     vertexPositionAttribute: any;
-    vertexTexAttribute: any;
     pMatrixUniform: any;
     mvMatrixUniform: any;
-    colorUniform: any;
+    colorUniform: any
 
     configure(context: CxRenderingContext): void {
         context.gl.useProgram(this.shaderProgram)
         this.vertexPositionAttribute = context.gl.getAttribLocation(this.shaderProgram, "aVertexPosition");
-        this.vertexTexAttribute = context.gl.getAttribLocation(this.shaderProgram, "aTexCoords");
         this.pMatrixUniform = context.gl.getUniformLocation(this.shaderProgram, "uPMatrix");
         this.mvMatrixUniform = context.gl.getUniformLocation(this.shaderProgram, "uMVMatrix");
-        this.colorUniform = context.gl.getUniformLocation(this.shaderProgram, "uColor");
+        this.colorUniform = context.gl.getUniformLocation(this.shaderProgram, "vColor");
     }
 
     getFragmentShaderSource(): string {
         return `precision mediump float;
 
-                varying vec2 vTexCoords;
-
-                uniform sampler2D uTexture;
-                uniform vec4 uColor;
+                uniform vec4 vColor;
 
                 void main(void) {
-                      gl_FragColor = texture2D(uTexture, vTexCoords) * uColor;
+                      gl_FragColor = vColor;
                     }
                 `
     }
 
     getVertexShaderSource(): string {
         return `attribute vec3 aVertexPosition;
-                attribute vec2 aTexCoords;
 
                   uniform mat4 uMVMatrix;
                   uniform mat4 uPMatrix;
 
-                  varying vec2 vTexCoords;
-
                   void main(void) {
                       gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-                      vTexCoords = aTexCoords;
+                      //vColor = aVertexColor;
                   }
                 `
     }

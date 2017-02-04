@@ -14,7 +14,7 @@ export class CxStyle {
   glow_size: number;
 
   constructor(){
-    this.background = [0.1, 0.1, 0.2, 1.0];
+    this.background = [0.1450, 0.2823, 0.3607, 1.0];
     this.fill_primary = [0.01, 0.01, 0.35, 1.0];
     this.fill_secondary = [0.01, 0.01, 0.40, 1.0];
     this.contour = [1.0, 1.0, 1.0, 0.1];

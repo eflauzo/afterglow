@@ -35,14 +35,14 @@ export class CxTextureFont extends CxTexture {
     font_canvas_height: number;
     font_tex_coords: Map<string, CxTexChar> = new Map<string, CxTexChar>();
 
-    constructor(font: string, size: number, fillStyle:string="") {
+    constructor(font: string, size: number) {
         super()
         //this.url = url;
         this.font = font;
         this.size = size;
         this.start_char = ' ';
         this.end_char = '~'
-        this.fillStyle = fillStyle;
+        this.fillStyle = 'white';
 
         this.font_canvas_width = 0;
         this.font_canvas_height = 0;
@@ -95,13 +95,15 @@ export class CxTextureFont extends CxTexture {
 
             ctx.fillStyle = this.fillStyle;
             ctx.fillText(character, pos_x, pos_y);
-            ctx.fillText(character, pos_x, pos_y);
+            //ctx.fillText(character, pos_x, pos_y);
             //ctx.fillText(character, pos_x, pos_y);
             //ctx.fillText(character, pos_x, pos_y);
             current_x += char_w;
         }
 
+        context.gl.pixelStorei(context.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
         this.handleTextureLoaded(context.gl, canvas);
+        context.gl.pixelStorei(context.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 0);
     }
 
 }

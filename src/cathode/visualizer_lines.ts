@@ -2,29 +2,29 @@ import { CxRenderingContext,
          CxRenderingMode
        } from './rendering_context'
 import { CxGeometry } from './geometry'
-import { CxVisualizer } from './visualizer'
+import { CxNodePayload } from './node_payload'
 import { CxRenderingProgram } from './rendering_program'
-import { CxRenderingProgramTextured } from './rendering_program_textured'
-import { CxTexture } from './texture'
+import { CxRenderingProgramLines } from './rendering_program_lines'
+import { CxVisualizer} from './visualizer'
 import { CxRGBA } from './basic_types'
 
 //export class CxNodePayloadVisualizer implements CxNodePayload {
 
-export class CxVisualizerTextured extends CxVisualizer {
+export class CxVisualizerLines extends CxVisualizer {
 
     //obj: CxGeometry;
     //rendering_program: any;
     //color = [1.0, 0.0, 0.0, 1.0];
 
-    color: CxRGBA;
     vertex_buf: WebGLBuffer = null;
-    tex_buf: WebGLBuffer = null;
-    texture: CxTexture;
+    color: CxRGBA;
+    strip: boolean;
+    //color_buf: WebGLBuffer = null;
 
-    constructor(obj: CxGeometry, texture: CxTexture) {
-        super(CxRenderingProgramTextured, obj);
-        this.texture = texture;
-        this.color = [1.0, 1.0, 1.0, 1.0]
+    constructor(obj: CxGeometry, color: CxRGBA) {
+        super(CxRenderingProgramLines, obj);
+        this.color = color;
+        this.strip = false;
         //this.obj = obj
         //this.rendering_program = rendering_program
     }
@@ -32,59 +32,66 @@ export class CxVisualizerTextured extends CxVisualizer {
     //visualize(context: CxRenderingContext, obj: CxGeometry): void {
 
     visualize(context: CxRenderingContext, program_param:CxRenderingProgram): void {
-        if (!this.texture.activate(context)){
-          return
-        }
-        //console.log("******")
+        var program:CxRenderingProgramLines = <CxRenderingProgramLines>program_param
+
         this.obj.preorder(context);
 
-        let program = <CxRenderingProgramTextured>program_param;
-
         //context.gl.useProgram(this.shaderProgram)
-
+        var vertices = this.obj.vertices(context);
+        if (vertices.length == 0)
+        {
+          return;
+        }
         program.activate(context)
 
-        context.gl.uniformMatrix4fv(program.pMatrixUniform, false, context.pMatrix);
-        context.gl.uniformMatrix4fv(program.mvMatrixUniform, false, context.mvMatrix);
-        context.gl.uniform4fv(program.colorUniform, this.color);
 
-        //var vertex_buf: [WebGLBuffer, number] = obj.getVertexBuffer(context)
-        context.gl.enableVertexAttribArray(program.vertexPositionAttribute);
-        if (this.vertex_buf == null) {
-          this.vertex_buf = context.gl.createBuffer();
-        }
+                context.gl.uniformMatrix4fv(program.pMatrixUniform, false, context.pMatrix);
+                context.gl.uniformMatrix4fv(program.mvMatrixUniform, false, context.mvMatrix);
+                context.gl.uniform4fv(program.colorUniform, this.color);
 
-        var triangle_vertices = this.obj.vertices(context);
-        var triangle_count = triangle_vertices.length / 3;
+                //var vertex_buf: [WebGLBuffer, number] = obj.getVertexBuffer(context)
+                if (this.vertex_buf == null) {
+                  this.vertex_buf = context.gl.createBuffer();
+                }
 
-        context.gl.bindBuffer(context.gl.ARRAY_BUFFER, this.vertex_buf);
-        //TODO: optimize
-        context.gl.bufferData(context.gl.ARRAY_BUFFER, triangle_vertices, context.gl.STATIC_DRAW);
-        context.gl.vertexAttribPointer(program.vertexPositionAttribute,
-            3, // 3 values per axis
-            context.gl.FLOAT,
-            false,
-            0,
-            0);
+                context.gl.enableVertexAttribArray(program.vertexPositionAttribute);
+                context.gl.bindBuffer(context.gl.ARRAY_BUFFER, this.vertex_buf);
+                //TODO: optimize
 
-        //var tex_buf: [WebGLBuffer, number] = this.obj.getTexBuffer(context)
-        context.gl.enableVertexAttribArray(program.vertexTexAttribute);
-        if (this.tex_buf == null) {
-          this.tex_buf = context.gl.createBuffer();
-        }
-        context.gl.bindBuffer(context.gl.ARRAY_BUFFER, this.tex_buf);
-        //TODO: optimize
-        context.gl.bufferData(context.gl.ARRAY_BUFFER, this.obj.texture(context), context.gl.STATIC_DRAW);
-        context.gl.vertexAttribPointer(program.vertexTexAttribute,
-            2, // 4 values per color
-            context.gl.FLOAT,
-            false,
-            0,
-            0);
-        context.gl.drawArrays(context.gl.TRIANGLES, 0, triangle_count);
-        this.texture.deactivate(context)
+                var line_count = vertices.length / 3;
+                context.gl.bufferData(context.gl.ARRAY_BUFFER, vertices, context.gl.STATIC_DRAW);
 
-        //console.log("444")
+                context.gl.vertexAttribPointer(program.vertexPositionAttribute,
+                    3, // 3 values per axis
+                    context.gl.FLOAT,
+                    false,
+                    0,
+                    0);
+
+                /*
+                //var color_buf: [WebGLBuffer, number] = obj.getColorBuffer(context)
+                if (this.color_buf == null) {
+                  this.color_buf = context.gl.createBuffer();
+                }
+                context.gl.enableVertexAttribArray(program.vertexColorAttribute);
+                context.gl.bindBuffer(context.gl.ARRAY_BUFFER, this.color_buf);
+                //TODO: optimize
+                context.gl.bufferData(context.gl.ARRAY_BUFFER, this.obj.colors(context), context.gl.STATIC_DRAW);
+
+                context.gl.vertexAttribPointer(program.vertexColorAttribute,
+                    4, // 4 values per color
+                    context.gl.FLOAT,
+                    false,
+                    0,
+                    0);
+                */
+
+                if (this.strip){
+                    context.gl.drawArrays(context.gl.LINE_STRIP, 0, line_count-1);
+                }else
+                {
+                  context.gl.drawArrays(context.gl.LINES, 0, line_count);
+                }
     }
 
 
