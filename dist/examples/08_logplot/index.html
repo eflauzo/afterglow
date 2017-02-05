@@ -1,0 +1,218 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+<head>
+  <meta charset="utf-8" />
+
+  <style>
+  @font-face {
+    font-family: "OCR-A";
+    src: url(ocra.regular.ttf) format("truetype");
+  }
+  </style>
+
+  <script src="../../../node_modules/browser-es-module-loader/dist/babel-browser-build.js"></script>
+  <script src="../../../node_modules/browser-es-module-loader/dist/browser-es-module-loader.js"></script>
+
+</head>
+<body>
+  <div style="font-family: OCR-A"> Hello 123.1230</div>
+
+  <canvas id="screen01" style="border: solid; height: 90vh; width: 95vw; display: block;"></canvas>
+
+  <script type="module">
+      // demonstration of visualization and selection using cathode structure
+
+      import {CxDisplay,
+        CxNode,
+        CxVisualizerColorArray,
+        CxGeometry,
+        CxNodePayloadViewport,
+        CxNodePayloadPerspective,
+        CxNodePayloadOrtho,
+        CxNodePayloadTransform,
+        CxNodePayloadInteractive,
+        CxNodePayloadName,
+        CxGrid,
+        CxSplitDirection,
+        CxSplit,
+        CxLogPlot,
+        CxNameManager,
+        CxScene
+        } from "../../cathode.js"
+
+        class CxDummyDataProvider {
+          subscribe_to_channel(channel_uri) {
+
+          }
+
+          unsubscribe_from_channel(channel_uri) {
+
+          }
+
+          set_range(start, end, max_points) {
+            console.log("Subscribing to ", start, " - ", end, " (max:",max_points)
+          }
+
+          get_data(channel_uri, start, end, max_points)  {
+            if (channel_uri == 'A'){
+              let index = [];
+              let values = [];
+              for (let i=0; i<=1000; i++) {
+                index.push(i + 550.0);
+                values.push(Math.sin((i/1000)*3.14*10.0));
+              }
+              return [index, values]
+            }
+            else if (channel_uri == 'B'){
+              let index = [];
+              let values = [];
+              for (let i=0; i<=1200; i++) {
+                index.push(i + 600.02);
+                values.push(Math.sin((i/1000)*3.14*30.0)*0.3);
+              }
+              return [index, values]
+            } if (channel_uri == 'C'){
+              let index = [];
+              let values = [];
+              for (let i=0; i<=900; i++) {
+                index.push(i + 752.5);
+                values.push(Math.sin((i/1000)*3.14*20.0));
+              }
+              return [index, values]
+            }
+            else {
+              return [[],[]]
+            }
+          }
+        }
+
+      class HelloWorldTriangle {
+
+        preorder(context) {
+        }
+
+
+        vertices(context) {
+
+          return new Float32Array([
+             0.0,  1.0, 0.0,
+            -1.0, -1.0, 0.0,
+             1.0, -1.0, 0.0,
+          ]);
+        }
+
+        colors(context) {
+          return new Float32Array([
+             1.0, 0.0, 0.0, 1.0,
+             0.0, 1.0, 0.0, 1.0,
+             0.0, 0.0, 1.0, 1.0,
+          ]);
+        }
+
+      }
+
+      //
+      //     root
+      //       |
+      //       - interactive
+      //       \    |
+      //        \---- Viewport
+      //               |
+      //               - perspective projection node
+      //                   |
+      //                   |
+      //                   ----- translate
+      //                             |
+      //                             - Name
+      //                                  |
+      //                                - Visualizer - HelloWorldTriangle
+      //
+      //
+
+      let scene = new CxScene();
+
+      var display = new CxDisplay("screen01");
+
+      let canva = document.getElementById("screen01");
+
+      var interactive_payload = new CxNodePayloadInteractive(canva, scene);
+
+      var interactive_node = new CxNode([interactive_payload])
+
+      var viewport1 = new CxNodePayloadViewport();
+      viewport1.viewport = [0.1,0.1,0.5,0.5]
+      viewport1.clear_color = [1.0, 0.0, 0.0, 1.0]
+
+      var viewport2 = new CxNodePayloadViewport();
+      viewport2.viewport = [0.8,0.8,0.1,0.1]
+      viewport2.clear_color = [1.0, 0.0, 1.0, 1.0]
+
+      var viewport_node1 = new CxNode([viewport1])
+      var viewport_node2 = new CxNode([viewport2])
+
+      var perspective_node = new CxNode([new CxNodePayloadPerspective()])
+
+      var name_node = new CxNode([new CxNodePayloadName(4)])
+
+      var transform = new CxNodePayloadTransform()
+      transform.translate = [ 0.0, 0.0 , -5.0]
+
+      var transform_node = new CxNode([transform])
+
+      var visualizer_node = new CxNode([
+          new CxVisualizerColorArray(new HelloWorldTriangle())
+        ]
+      )
+
+      var root = new CxNode([]);
+
+      /*
+      var hSplit = new CxSplit()
+      hSplit.direction = CxSplitDirection.CxHorizontalSplit;
+      hSplit.volume = 0.30;
+
+      var vSplit = new CxSplit()
+      vSplit.direction = CxSplitDirection.CxVerticalSplit;
+      vSplit.volume = 0.25;
+
+      var hSplit2 = new CxSplit()
+      hSplit2.direction = CxSplitDirection.CxHorizontalSplit;
+      hSplit2.volume = 0.60;
+
+      var vSplit2 = new CxSplit()
+      vSplit2.direction = CxSplitDirection.CxVerticalSplit;
+      vSplit2.volume = 0.85;
+
+      var hSplit3 = new CxSplit()
+      hSplit3.direction = CxSplitDirection.CxHorizontalSplit;
+      hSplit3.volume = 0.20;
+      */
+
+      var grid = new CxGrid(scene);
+      grid.split.volume = 0.40;
+      grid.split.direction = CxSplitDirection.CxHorizontalSplit;
+      //grid.split.subsplitA = hSplit;
+      //grid.split.subsplitB = vSplit;
+      grid.split.sceneB = new CxLogPlot(scene, new CxDummyDataProvider())
+
+      root.items.push(interactive_node)
+
+      let grid_node = new CxNode([grid])
+
+      root.items.push(grid_node)
+
+      interactive_node.items.push(grid_node)
+
+      perspective_node.items.push(transform_node)
+      transform_node.items.push(name_node)
+      name_node.items.push(visualizer_node)
+
+    scene.root = root;
+    display.start(scene)
+
+  </script>
+
+</body>
+</html>
