@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "es6",
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "noImplicitAny": true,
+        "outDir": "./stage/",
+        "sourceMap": true,
+        "target": "ES6",
+        "moduleResolution": "node",
+        "declaration": true,
+        "declarationDir": "./stage/"
+    },
+    "include": [
+      "./ts/cathode.ts"
+    ]
+}

@@ -1,15 +1,18 @@
 {
     "compilerOptions": {
-        "module": "es6",
+        "module": "system",
         "removeComments": false,
         "preserveConstEnums": true,
         "experimentalDecorators": true,
         "noImplicitAny": true,
-        "outDir": "./dist/cathode/",
+        "outFile": "./js/cathode.js",
         "sourceMap": true,
-        "target": "ES6"
+        "target": "ES6",
+        "moduleResolution": "node",
+        "declaration": true,
+        "sourceMap": false
     },
     "include": [
-      "src/**/*"
+      "./ts/cathode.ts"
     ]
 }

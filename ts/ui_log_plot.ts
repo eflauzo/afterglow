@@ -35,7 +35,7 @@ export interface CxLogDataProvider {
 
 //dataset should have offset
 
-class CxCurve {
+export class CxCurve {
   name: string;
   //color: CxRGBA;
   left: number;
@@ -116,7 +116,7 @@ class MajorGridGeometry implements CxGeometry{
   }
 }
 
-class MinorGridGeometry implements CxGeometry {
+export class MinorGridGeometry implements CxGeometry {
   track:CxTrack;
 
   preorder(context: CxRenderingContext): void {}
@@ -149,7 +149,7 @@ class MinorGridGeometry implements CxGeometry {
   }
 }
 
-class IndexGridGeometry implements CxGeometry {
+export class IndexGridGeometry implements CxGeometry {
   track:CxTrack;
 
   preorder(context: CxRenderingContext): void {}
@@ -161,7 +161,7 @@ class IndexGridGeometry implements CxGeometry {
 
     for (let division=0; division<=number_of_divisions; division++) {
       let index_pos = Math.floor(this.track._template._logplot.start_index / this.track._template.index_divisions) + division;
-      let index_actual = index_pos * this.track._template.index_divisions;
+      let index_actual = index_pos * this.track._template.index_divisions - this.track._template._logplot.start_index;
       result.push(index_actual);
       result.push(0.0);
       result.push(0.0);
@@ -183,7 +183,7 @@ class IndexGridGeometry implements CxGeometry {
   }
 }
 
-class CurveGeometry implements CxGeometry {
+export class CurveGeometry implements CxGeometry {
   track:CxTrack;
   channel:string;
 
@@ -222,7 +222,7 @@ class CurveGeometry implements CxGeometry {
     let result:Array<number> = [];
 
     for (let i=0; i<index.length; i++) {
-      result.push(index[i]);
+      result.push(index[i] - this.track._template._logplot.start_index); //lets make plot zero base by subtracting start
       result.push(values[i]);
       result.push(0.0);
     }
@@ -239,7 +239,7 @@ class CurveGeometry implements CxGeometry {
   }
 }
 
-class CxTrack implements CxPointerEventsProcessor{
+export class CxTrack implements CxPointerEventsProcessor{
   name: string;
   width: number; // 0..1 percent ?
   curves: Array<CxCurve>
@@ -321,7 +321,7 @@ class CxTrack implements CxPointerEventsProcessor{
       this._template._logplot.start_index = this._drag_index + (relative_dx * this._template.index_resolution)
       this._template._logplot._provider.set_range(
           this._template._logplot.start_index,
-          this._template.index_resolution,
+          this._template._logplot.start_index + this._template.index_resolution,
           _w
       );
       //console.log(" >>> ", this._template._logplot.start_index)
@@ -373,8 +373,8 @@ class CxTrack implements CxPointerEventsProcessor{
       this.proj_tmp.exit(context);
 
       // making real index projection
-      this.proj_tmp.left = this._template._logplot.start_index;
-      this.proj_tmp.right = this._template._logplot.start_index + this._template.index_resolution;
+      this.proj_tmp.left =  0.0;//this._template._logplot.start_index;
+      this.proj_tmp.right = this._template.index_resolution;// - this._template._logplot.start_index;//this._template._logplot.start_index + this._template.index_resolution;
 
       this.proj_tmp.enter(context);
         this.visualizer_index_grid.enter(context);
@@ -401,7 +401,7 @@ class CxTrack implements CxPointerEventsProcessor{
 
 }
 
-class CxLogTemplate {
+export class CxLogTemplate {
     index_resolution: number;
     index_divisions: number;
     //is_vertical: boolean;

@@ -13,21 +13,28 @@ import multiEntry from 'rollup-plugin-multi-entry';
 //let external = Object.keys(pkg.dependencies);
 
 export default {
-  entry: 'dist/cathode/*.js',
-  dest: 'dist/cathode.js',
+  //entry: 'dist/cathode/*.js',
+  //dest: 'dist/cathode.js',
+
+  entry: './stage/cathode.js',
+  dest: './js/cathode.js',
+  sourceMap: true,
+
   plugins: [
 
-    nodeResolve({
-          jsnext: true,
-          main: true
-        }),
 
-          typescript()
-        ,
 
-        multiEntry()
-        ,
+        //  typescript()
+        //,
 
+        //multiEntry()
+        //,
+
+        
+        nodeResolve({
+              jsnext: true,
+              main: true
+            }),
 
       commonjs({
         // non-CommonJS modules will be ignored, but you can also
@@ -48,6 +55,13 @@ export default {
         // explicitly specify unresolvable named exports
         // (see below for more details)
         //namedExports: { './module.js': ['foo', 'bar' ] }  // Default: undefined
+
+        /*
+        namedExports: {
+          'node_modules/dexie/dist/dexie.es.js': [ 'Dexie' ]
+        }
+        */
+
       })
 
     //babel(babelrc()),
@@ -59,6 +73,7 @@ export default {
   //  sourceType: "treeshake"
   // },
   //external: external,
+  //external: [ 'dexie' ],
   targets: [
     //{
     //  dest: pkg['main'],

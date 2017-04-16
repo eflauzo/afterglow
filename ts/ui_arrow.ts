@@ -44,7 +44,7 @@ export class CxArrow extends CxUIElement {
 }
 
 
-class ArrowGeometry implements CxGeometry {
+export class ArrowGeometry implements CxGeometry {
     preorder(context: CxRenderingContext): void {
 
     }
