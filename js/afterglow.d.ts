@@ -720,7 +720,7 @@ declare module "ui_log_plot" {
         exit(context: CxRenderingContext): void;
     }
 }
-declare module "cathode" {
+declare module "afterglow" {
     export { CxDisplay } from "display";
     export { CxNode } from "node";
     export { CxVisualizerColorArray } from "visualizer_color_array";

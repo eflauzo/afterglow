@@ -5,7 +5,7 @@
         "preserveConstEnums": true,
         "experimentalDecorators": true,
         "noImplicitAny": true,
-        "outFile": "./js/cathode.js",
+        "outFile": "./js/afterglow.js",
         "sourceMap": true,
         "target": "ES6",
         "moduleResolution": "node",
@@ -13,6 +13,6 @@
         "sourceMap": false
     },
     "include": [
-      "./ts/cathode.ts"
+      "./ts/afterglow.ts"
     ]
 }

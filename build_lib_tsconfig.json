@@ -13,6 +13,6 @@
         "declarationDir": "./stage/"
     },
     "include": [
-      "./ts/cathode.ts"
+      "./ts/afterglow.ts"
     ]
 }

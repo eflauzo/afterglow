@@ -7671,4 +7671,4 @@ class CxLogPlot extends CxUIWidget {
 }
 
 export { CxDisplay, CxNode, CxVisualizerColorArray, CxVisualizerPalos, CxVisualizerTextured, CxVisualizerLines, CxVisualizerAngularAlpha, CxTextureImage, CxTextureFont, CxSelectableBackground, CxNodePayloadViewport, CxNodePayloadPerspective, CxNodePayloadOrtho, CxNodePayloadTransform, CxNodePayloadInteractive, CxNodePayloadName, CxNameManager, CxNodePayloadLabel, CxCylinder, CxScene, CxRenderingContext, CxGrid, CxSplit, CxSplitDirection, CxLogPlot };
-//# sourceMappingURL=cathode.js.map
+//# sourceMappingURL=afterglow.js.map

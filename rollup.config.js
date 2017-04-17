@@ -16,8 +16,8 @@ export default {
   //entry: 'dist/cathode/*.js',
   //dest: 'dist/cathode.js',
 
-  entry: './stage/cathode.js',
-  dest: './js/cathode.js',
+  entry: './stage/afterglow.js',
+  dest: './js/afterglow.js',
   sourceMap: true,
 
   plugins: [
@@ -30,7 +30,7 @@ export default {
         //multiEntry()
         //,
 
-        
+
         nodeResolve({
               jsnext: true,
               main: true

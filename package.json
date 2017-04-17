@@ -1,9 +1,9 @@
 {
-  "name": "cathode",
-  "version": "0.0.1",
+  "name": "afterglow",
+  "version": "0.0.2",
   "description": "JavaScript UI Library",
-  "main": "js/cathode.js",
-  "typings": "js/cathode",
+  "main": "js/afterglow.js",
+  "typings": "js/afterglow",
   "scripts": {
     "test": "tsc -p tests && mocha tests/built/tests/*.js",
     "build": "tsc -p build_dts_tsconfig.json && tsc -p build_lib_tsconfig.json && rollup -c"
