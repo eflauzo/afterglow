@@ -13,8 +13,8 @@ import multiEntry from 'rollup-plugin-multi-entry';
 //let external = Object.keys(pkg.dependencies);
 
 export default {
-  //entry: 'dist/cathode/*.js',
-  //dest: 'dist/cathode.js',
+  //entry: 'dist/afterglow/*.js',
+  //dest: 'dist/afterglow.js',
 
   entry: './stage/afterglow.js',
   dest: './js/afterglow.js',
